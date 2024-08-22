@@ -67,8 +67,17 @@ func (u *Quiz) Content() string {
 	return u.content
 }
 
-func (u *Quiz) Options() Options {
-	return u.options
+func (u *Quiz) Option1() string {
+	return u.options.option1
+}
+func (u *Quiz) Option2() string {
+	return u.options.option2
+}
+func (u *Quiz) Option3() string {
+	return u.options.option3
+}
+func (u *Quiz) Option4() string {
+	return u.options.option4
 }
 
 func (u *Quiz) CorrectNum() int {

@@ -9,7 +9,12 @@ import (
 )
 
 type Querier interface {
+	DeleteQuiz(ctx context.Context, id string) error
 	DeleteUser(ctx context.Context, id string) error
+	FindLatestQuizzes(ctx context.Context, arg FindLatestQuizzesParams) ([]Quiz, error)
+	FindQuizByID(ctx context.Context, id string) (Quiz, error)
+	FindQuizzesByUserID(ctx context.Context, arg FindQuizzesByUserIDParams) ([]Quiz, error)
+	InsertQuiz(ctx context.Context, arg InsertQuizParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) error
 	UpdateUser(ctx context.Context, arg UpdateUserParams) error
 	UserFindAll(ctx context.Context) ([]User, error)

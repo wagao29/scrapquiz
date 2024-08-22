@@ -5,8 +5,22 @@
 package dbgen
 
 import (
+	"database/sql"
 	"time"
 )
+
+type Quiz struct {
+	ID          string         `json:"id"`
+	UserID      string         `json:"user_id"`
+	Content     string         `json:"content"`
+	Option1     string         `json:"option_1"`
+	Option2     string         `json:"option_2"`
+	Option3     sql.NullString `json:"option_3"`
+	Option4     sql.NullString `json:"option_4"`
+	CorrectNum  int8           `json:"correct_num"`
+	Explanation sql.NullString `json:"explanation"`
+	CreatedAt   time.Time      `json:"created_at"`
+}
 
 type User struct {
 	ID        string    `json:"id"`
