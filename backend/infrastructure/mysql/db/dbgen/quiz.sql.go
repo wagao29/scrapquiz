@@ -21,32 +21,56 @@ func (q *Queries) DeleteQuiz(ctx context.Context, id string) error {
 	return err
 }
 
-const findLatestQuizzes = `-- name: FindLatestQuizzes :many
+const fetchLatestQuizzes = `-- name: FetchLatestQuizzes :many
 SELECT
-  id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 ORDER BY id DESC
 LIMIT ? OFFSET ?
 `
 
-type FindLatestQuizzesParams struct {
+type FetchLatestQuizzesParams struct {
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
 
-func (q *Queries) FindLatestQuizzes(ctx context.Context, arg FindLatestQuizzesParams) ([]Quiz, error) {
-	rows, err := q.db.QueryContext(ctx, findLatestQuizzes, arg.Limit, arg.Offset)
+type FetchLatestQuizzesRow struct {
+	ID            string         `json:"id"`
+	Content       string         `json:"content"`
+	Option1       string         `json:"option_1"`
+	Option2       string         `json:"option_2"`
+	Option3       sql.NullString `json:"option_3"`
+	Option4       sql.NullString `json:"option_4"`
+	CorrectNum    int8           `json:"correct_num"`
+	Explanation   sql.NullString `json:"explanation"`
+	UserID        string         `json:"user_id"`
+	UserName      string         `json:"user_name"`
+	UserAvatarUrl string         `json:"user_avatar_url"`
+}
+
+func (q *Queries) FetchLatestQuizzes(ctx context.Context, arg FetchLatestQuizzesParams) ([]FetchLatestQuizzesRow, error) {
+	rows, err := q.db.QueryContext(ctx, fetchLatestQuizzes, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Quiz{}
+	items := []FetchLatestQuizzesRow{}
 	for rows.Next() {
-		var i Quiz
+		var i FetchLatestQuizzesRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.UserID,
 			&i.Content,
 			&i.Option1,
 			&i.Option2,
@@ -54,7 +78,9 @@ func (q *Queries) FindLatestQuizzes(ctx context.Context, arg FindLatestQuizzesPa
 			&i.Option4,
 			&i.CorrectNum,
 			&i.Explanation,
-			&i.CreatedAt,
+			&i.UserID,
+			&i.UserName,
+			&i.UserAvatarUrl,
 		); err != nil {
 			return nil, err
 		}
@@ -69,21 +95,45 @@ func (q *Queries) FindLatestQuizzes(ctx context.Context, arg FindLatestQuizzesPa
 	return items, nil
 }
 
-const findQuizByID = `-- name: FindQuizByID :one
+const fetchQuizByID = `-- name: FetchQuizByID :one
 SELECT
-   id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 WHERE
-  id = ?
+  quizzes.id = ?
 `
 
-func (q *Queries) FindQuizByID(ctx context.Context, id string) (Quiz, error) {
-	row := q.db.QueryRowContext(ctx, findQuizByID, id)
-	var i Quiz
+type FetchQuizByIDRow struct {
+	ID            string         `json:"id"`
+	Content       string         `json:"content"`
+	Option1       string         `json:"option_1"`
+	Option2       string         `json:"option_2"`
+	Option3       sql.NullString `json:"option_3"`
+	Option4       sql.NullString `json:"option_4"`
+	CorrectNum    int8           `json:"correct_num"`
+	Explanation   sql.NullString `json:"explanation"`
+	UserID        string         `json:"user_id"`
+	UserName      string         `json:"user_name"`
+	UserAvatarUrl string         `json:"user_avatar_url"`
+}
+
+func (q *Queries) FetchQuizByID(ctx context.Context, id string) (FetchQuizByIDRow, error) {
+	row := q.db.QueryRowContext(ctx, fetchQuizByID, id)
+	var i FetchQuizByIDRow
 	err := row.Scan(
 		&i.ID,
-		&i.UserID,
 		&i.Content,
 		&i.Option1,
 		&i.Option2,
@@ -91,39 +141,65 @@ func (q *Queries) FindQuizByID(ctx context.Context, id string) (Quiz, error) {
 		&i.Option4,
 		&i.CorrectNum,
 		&i.Explanation,
-		&i.CreatedAt,
+		&i.UserID,
+		&i.UserName,
+		&i.UserAvatarUrl,
 	)
 	return i, err
 }
 
-const findQuizzesByUserID = `-- name: FindQuizzesByUserID :many
+const fetchQuizzesByUserID = `-- name: FetchQuizzesByUserID :many
 SELECT
-   id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 WHERE
   user_id = ?
 LIMIT ? OFFSET ?
 `
 
-type FindQuizzesByUserIDParams struct {
+type FetchQuizzesByUserIDParams struct {
 	UserID string `json:"user_id"`
 	Limit  int32  `json:"limit"`
 	Offset int32  `json:"offset"`
 }
 
-func (q *Queries) FindQuizzesByUserID(ctx context.Context, arg FindQuizzesByUserIDParams) ([]Quiz, error) {
-	rows, err := q.db.QueryContext(ctx, findQuizzesByUserID, arg.UserID, arg.Limit, arg.Offset)
+type FetchQuizzesByUserIDRow struct {
+	ID            string         `json:"id"`
+	Content       string         `json:"content"`
+	Option1       string         `json:"option_1"`
+	Option2       string         `json:"option_2"`
+	Option3       sql.NullString `json:"option_3"`
+	Option4       sql.NullString `json:"option_4"`
+	CorrectNum    int8           `json:"correct_num"`
+	Explanation   sql.NullString `json:"explanation"`
+	UserID        string         `json:"user_id"`
+	UserName      string         `json:"user_name"`
+	UserAvatarUrl string         `json:"user_avatar_url"`
+}
+
+func (q *Queries) FetchQuizzesByUserID(ctx context.Context, arg FetchQuizzesByUserIDParams) ([]FetchQuizzesByUserIDRow, error) {
+	rows, err := q.db.QueryContext(ctx, fetchQuizzesByUserID, arg.UserID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Quiz{}
+	items := []FetchQuizzesByUserIDRow{}
 	for rows.Next() {
-		var i Quiz
+		var i FetchQuizzesByUserIDRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.UserID,
 			&i.Content,
 			&i.Option1,
 			&i.Option2,
@@ -131,7 +207,9 @@ func (q *Queries) FindQuizzesByUserID(ctx context.Context, arg FindQuizzesByUser
 			&i.Option4,
 			&i.CorrectNum,
 			&i.Explanation,
-			&i.CreatedAt,
+			&i.UserID,
+			&i.UserName,
+			&i.UserAvatarUrl,
 		); err != nil {
 			return nil, err
 		}

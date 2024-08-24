@@ -1,25 +1,58 @@
--- name: FindQuizByID :one
+-- name: FetchQuizByID :one
 SELECT
-   *
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 WHERE
-  id = ?;
+  quizzes.id = ?;
 
--- name: FindQuizzesByUserID :many
+-- name: FetchQuizzesByUserID :many
 SELECT
-   *
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 WHERE
   user_id = ?
 LIMIT ? OFFSET ?;
 
--- name: FindLatestQuizzes :many
+-- name: FetchLatestQuizzes :many
 SELECT
-  *
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url
 FROM
   quizzes
+INNER JOIN users ON quiz.user_id = users.id
 ORDER BY id DESC
 LIMIT ? OFFSET ?;
 
