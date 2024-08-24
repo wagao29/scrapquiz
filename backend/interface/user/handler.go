@@ -57,7 +57,7 @@ func (h handler) GetUsers(c echo.Context) error {
 }
 
 func (h handler) PostUsers(c echo.Context) error {
-	var params PostUsersRequest
+	var params PostUserRequest
 	err := c.Bind(&params)
 	if err != nil {
 		return utilsError.NewBadRequestError(err.Error())

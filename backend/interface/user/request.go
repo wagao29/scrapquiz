@@ -1,6 +1,6 @@
 package user
 
-type PostUsersRequest struct {
+type PostUserRequest struct {
 	ID        string `json:"id" validate:"required"`
 	Name      string `json:"name" validate:"required"`
 	AvatarURL string `json:"avatar_url" validate:"required"`
