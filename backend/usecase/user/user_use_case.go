@@ -6,123 +6,48 @@ import (
 	userDomain "scrapquiz/domain/user"
 )
 
-// UseCase types
-type FindUserUseCase struct {
-	userRepo userDomain.UserRepository
-}
-type FindUsersUseCase struct {
-	userRepo userDomain.UserRepository
-}
-type SaveUserUseCase struct {
-	userRepo userDomain.UserRepository
-}
-type UpdateUserUseCase struct {
-	userRepo userDomain.UserRepository
-}
-type DeleteUserUseCase struct {
-	userRepo userDomain.UserRepository
-}
-type UserUseCase struct {
-	FindUserUseCase   *FindUserUseCase
-	FindUsersUseCase  *FindUsersUseCase
-	SaveUserUseCase   *SaveUserUseCase
-	UpdateUserUseCase *UpdateUserUseCase
-	DeleteUserUseCase *DeleteUserUseCase
-}
-
-// DTO types
-type userUseCaseDto struct {
+type UserUseCaseInputDto struct {
 	ID        string
 	Name      string
 	AvatarURL string
 }
-type FindUserUseCaseInputDto struct {
-	ID string
+type UserUseCaseOutputDto struct {
+	ID        string
+	Name      string
+	AvatarURL string
 }
-type DeleteUserUseCaseInputDto struct {
-	ID string
-}
-type (
-	FindUserUseCaseOutputDto  = userUseCaseDto
-	SaveUserUseCaseInputDto   = userUseCaseDto
-	SaveUserUseCaseOutputDto  = userUseCaseDto
-	UpdateUserUseCaseInputDto = userUseCaseDto
-	FindUsersUseCaseOutputDto = []*userUseCaseDto
-)
 
-// Factory functions
+type UserUseCase struct {
+	userRepo userDomain.UserRepository
+}
+
 func NewUserUseCase(userRepo userDomain.UserRepository) *UserUseCase {
 	return &UserUseCase{
-		newFindUserUseCase(userRepo),
-		newFindUsersUseCase(userRepo),
-		newSaveUserUseCase(userRepo),
-		newUpdateUserUseCase(userRepo),
-		newDeleteUserUseCase(userRepo),
-	}
-}
-
-func newFindUserUseCase(
-	userRepo userDomain.UserRepository,
-) *FindUserUseCase {
-	return &FindUserUseCase{
 		userRepo: userRepo,
 	}
 }
 
-func newFindUsersUseCase(
-	userRepo userDomain.UserRepository,
-) *FindUsersUseCase {
-	return &FindUsersUseCase{
-		userRepo: userRepo,
-	}
-}
-
-func newSaveUserUseCase(
-	userRepo userDomain.UserRepository,
-) *SaveUserUseCase {
-	return &SaveUserUseCase{
-		userRepo: userRepo,
-	}
-}
-
-func newUpdateUserUseCase(
-	userRepo userDomain.UserRepository,
-) *UpdateUserUseCase {
-	return &UpdateUserUseCase{
-		userRepo: userRepo,
-	}
-}
-
-func newDeleteUserUseCase(
-	userRepo userDomain.UserRepository,
-) *DeleteUserUseCase {
-	return &DeleteUserUseCase{
-		userRepo: userRepo,
-	}
-}
-
-// Run Methods
-func (uc *FindUserUseCase) Run(ctx context.Context, dto FindUserUseCaseInputDto) (*FindUserUseCaseOutputDto, error) {
-	user, err := uc.userRepo.FindByID(ctx, dto.ID)
+func (uc *UserUseCase) FindByID(ctx context.Context, id string) (*UserUseCaseOutputDto, error) {
+	user, err := uc.userRepo.FindByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return &FindUserUseCaseOutputDto{
+	return &UserUseCaseOutputDto{
 		ID:        user.ID(),
 		Name:      user.Name(),
 		AvatarURL: user.AvatarURL(),
 	}, nil
 }
 
-func (uc *FindUsersUseCase) Run(ctx context.Context) (FindUsersUseCaseOutputDto, error) {
+func (uc *UserUseCase) FindAll(ctx context.Context) ([]*UserUseCaseOutputDto, error) {
 	users, err := uc.userRepo.FindAll(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	var dtoUsers []*userUseCaseDto
+	var dtoUsers []*UserUseCaseOutputDto
 	for _, user := range users {
-		dtoUsers = append(dtoUsers, &userUseCaseDto{
+		dtoUsers = append(dtoUsers, &UserUseCaseOutputDto{
 			ID:        user.ID(),
 			Name:      user.Name(),
 			AvatarURL: user.AvatarURL(),
@@ -132,7 +57,7 @@ func (uc *FindUsersUseCase) Run(ctx context.Context) (FindUsersUseCaseOutputDto,
 	return dtoUsers, nil
 }
 
-func (uc *SaveUserUseCase) Run(ctx context.Context, dto SaveUserUseCaseInputDto) (*SaveUserUseCaseOutputDto, error) {
+func (uc *UserUseCase) Save(ctx context.Context, dto UserUseCaseInputDto) (*UserUseCaseOutputDto, error) {
 	user, err := userDomain.NewUser(dto.ID, dto.Name, dto.AvatarURL)
 	if err != nil {
 		return nil, err
@@ -140,14 +65,14 @@ func (uc *SaveUserUseCase) Run(ctx context.Context, dto SaveUserUseCaseInputDto)
 	if err = uc.userRepo.Save(ctx, user); err != nil {
 		return nil, err
 	}
-	return &SaveUserUseCaseOutputDto{
+	return &UserUseCaseOutputDto{
 		ID:        user.ID(),
 		Name:      user.Name(),
 		AvatarURL: user.AvatarURL(),
 	}, nil
 }
 
-func (uc *UpdateUserUseCase) Run(ctx context.Context, dto SaveUserUseCaseInputDto) error {
+func (uc *UserUseCase) Update(ctx context.Context, dto UserUseCaseInputDto) error {
 	user, err := userDomain.NewUser(dto.ID, dto.Name, dto.AvatarURL)
 	if err != nil {
 		return err
@@ -158,8 +83,8 @@ func (uc *UpdateUserUseCase) Run(ctx context.Context, dto SaveUserUseCaseInputDt
 	return nil
 }
 
-func (uc *DeleteUserUseCase) Run(ctx context.Context, dto DeleteUserUseCaseInputDto) error {
-	if err := uc.userRepo.Delete(ctx, dto.ID); err != nil {
+func (uc *UserUseCase) Delete(ctx context.Context, id string) error {
+	if err := uc.userRepo.Delete(ctx, id); err != nil {
 		return err
 	}
 	return nil

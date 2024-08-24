@@ -21,10 +21,7 @@ func NewHandler(uc *userUseCase.UserUseCase) handler {
 }
 
 func (h handler) GetUserByID(c echo.Context) error {
-	inputDto := userUseCase.FindUserUseCaseInputDto{
-		ID: c.Param("id"),
-	}
-	outputDto, err := h.uc.FindUserUseCase.Run(c.Request().Context(), inputDto)
+	outputDto, err := h.uc.FindByID(c.Request().Context(), c.Param("id"))
 	if err != nil {
 		return err
 	}
@@ -38,7 +35,7 @@ func (h handler) GetUserByID(c echo.Context) error {
 }
 
 func (h handler) GetUsers(c echo.Context) error {
-	outputDtos, err := h.uc.FindUsersUseCase.Run(c.Request().Context())
+	outputDtos, err := h.uc.FindAll(c.Request().Context())
 	if err != nil {
 		return err
 	}
@@ -68,12 +65,12 @@ func (h handler) PostUsers(c echo.Context) error {
 		return utilsError.NewBadRequestError(err.Error())
 	}
 
-	inputDto := userUseCase.SaveUserUseCaseInputDto{
+	inputDto := userUseCase.UserUseCaseInputDto{
 		ID:        params.ID,
 		Name:      params.Name,
 		AvatarURL: params.AvatarURL,
 	}
-	outputDto, err := h.uc.SaveUserUseCase.Run(c.Request().Context(), inputDto)
+	outputDto, err := h.uc.Save(c.Request().Context(), inputDto)
 	if err != nil {
 		return err
 	}
@@ -99,12 +96,12 @@ func (h handler) PutUser(c echo.Context) error {
 		return utilsError.NewBadRequestError(err.Error())
 	}
 
-	inputDto := userUseCase.UpdateUserUseCaseInputDto{
+	inputDto := userUseCase.UserUseCaseInputDto{
 		ID:        c.Param("id"),
 		Name:      params.Name,
 		AvatarURL: params.AvatarURL,
 	}
-	err = h.uc.UpdateUserUseCase.Run(c.Request().Context(), inputDto)
+	err = h.uc.Update(c.Request().Context(), inputDto)
 	if err != nil {
 		return err
 	}
@@ -113,10 +110,7 @@ func (h handler) PutUser(c echo.Context) error {
 }
 
 func (h handler) DeleteUserByID(c echo.Context) error {
-	inputDto := userUseCase.DeleteUserUseCaseInputDto{
-		ID: c.Param("id"),
-	}
-	err := h.uc.DeleteUserUseCase.Run(c.Request().Context(), inputDto)
+	err := h.uc.Delete(c.Request().Context(), c.Param("id"))
 	if err != nil {
 		return err
 	}

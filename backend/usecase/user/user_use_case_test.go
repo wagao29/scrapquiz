@@ -18,21 +18,21 @@ const (
 	testAvatarURL = "https://example.com/avatar.png"
 )
 
-func TestFindUserUseCase_Run(t *testing.T) {
+func TestUserUseCase_FindByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockUserRepo := userDomain.NewMockUserRepository(ctrl)
-	uc := newFindUserUseCase(mockUserRepo)
+	uc := NewUserUseCase(mockUserRepo)
 
 	tests := []struct {
 		name     string
-		input    FindUserUseCaseInputDto
+		input    string
 		mockFunc func()
-		want     *FindUserUseCaseOutputDto
+		want     *UserUseCaseOutputDto
 		wantErr  bool
 	}{
 		{
 			name:  "正常系",
-			input: FindUserUseCaseInputDto{ID: "01FVSHW3SER8977QCJBYZD9HAW"},
+			input: "01FVSHW3SER8977QCJBYZD9HAW",
 			mockFunc: func() {
 				mockUserRepo.
 					EXPECT().
@@ -45,7 +45,7 @@ func TestFindUserUseCase_Run(t *testing.T) {
 						)
 					})
 			},
-			want: &FindUserUseCaseOutputDto{
+			want: &UserUseCaseOutputDto{
 				ID:        testID,
 				Name:      testName,
 				AvatarURL: testAvatarURL,
@@ -54,7 +54,7 @@ func TestFindUserUseCase_Run(t *testing.T) {
 		},
 		{
 			name:  "異常系: idを持つユーザーが存在しない場合",
-			input: FindUserUseCaseInputDto{ID: "01FVSHW3SER8977QCJBYZD9HAX"},
+			input: "01FVSHW3SER8977QCJBYZD9HAX",
 			mockFunc: func() {
 				mockUserRepo.
 					EXPECT().
@@ -71,7 +71,7 @@ func TestFindUserUseCase_Run(t *testing.T) {
 			tt := tt
 			t.Parallel()
 			tt.mockFunc()
-			got, err := uc.Run(context.Background(), tt.input)
+			got, err := uc.FindByID(context.Background(), tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -83,15 +83,15 @@ func TestFindUserUseCase_Run(t *testing.T) {
 	}
 }
 
-func TestFindUsersUseCase_Run(t *testing.T) {
+func TestUserUseCase_FindAll(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockUserRepo := userDomain.NewMockUserRepository(ctrl)
-	uc := newFindUsersUseCase(mockUserRepo)
+	uc := NewUserUseCase(mockUserRepo)
 
 	tests := []struct {
 		name     string
 		mockFunc func()
-		want     FindUsersUseCaseOutputDto
+		want     []*UserUseCaseOutputDto
 		wantErr  bool
 	}{
 		{
@@ -113,7 +113,7 @@ func TestFindUsersUseCase_Run(t *testing.T) {
 						return users, nil
 					})
 			},
-			want: FindUsersUseCaseOutputDto{
+			want: []*UserUseCaseOutputDto{
 				{
 					ID:        "01FVSHW3SER8977QCJBYZD9HAW",
 					Name:      testName,
@@ -150,7 +150,7 @@ func TestFindUsersUseCase_Run(t *testing.T) {
 			tt := tt
 			t.Parallel()
 			tt.mockFunc()
-			got, err := uc.Run(context.Background())
+			got, err := uc.FindAll(context.Background())
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -162,21 +162,21 @@ func TestFindUsersUseCase_Run(t *testing.T) {
 	}
 }
 
-func TestSaveUserUseCase_Run(t *testing.T) {
+func TestUserUseCase_Save(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockUserRepo := userDomain.NewMockUserRepository(ctrl)
-	uc := newSaveUserUseCase(mockUserRepo)
+	uc := NewUserUseCase(mockUserRepo)
 
 	tests := []struct {
 		name     string
-		input    SaveUserUseCaseInputDto
+		input    UserUseCaseInputDto
 		mockFunc func()
-		want     *SaveUserUseCaseOutputDto
+		want     *UserUseCaseOutputDto
 		wantErr  bool
 	}{
 		{
 			name: "正常系",
-			input: SaveUserUseCaseInputDto{
+			input: UserUseCaseInputDto{
 				ID:        testID,
 				Name:      testName,
 				AvatarURL: testAvatarURL,
@@ -184,7 +184,7 @@ func TestSaveUserUseCase_Run(t *testing.T) {
 			mockFunc: func() {
 				mockUserRepo.EXPECT().Save(gomock.Any(), gomock.Any()).Return(nil)
 			},
-			want: &SaveUserUseCaseOutputDto{
+			want: &UserUseCaseOutputDto{
 				ID:        testID,
 				Name:      testName,
 				AvatarURL: testAvatarURL,
@@ -198,7 +198,7 @@ func TestSaveUserUseCase_Run(t *testing.T) {
 			tt := tt
 			t.Parallel()
 			tt.mockFunc()
-			got, err := uc.Run(context.Background(), tt.input)
+			got, err := uc.Save(context.Background(), tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -210,20 +210,20 @@ func TestSaveUserUseCase_Run(t *testing.T) {
 	}
 }
 
-func TestUpdateUserUseCase_Run(t *testing.T) {
+func TestUserUseCase_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockUserRepo := userDomain.NewMockUserRepository(ctrl)
-	uc := newUpdateUserUseCase(mockUserRepo)
+	uc := NewUserUseCase(mockUserRepo)
 
 	tests := []struct {
 		name     string
-		input    UpdateUserUseCaseInputDto
+		input    UserUseCaseInputDto
 		mockFunc func()
 		wantErr  bool
 	}{
 		{
 			name: "正常系",
-			input: UpdateUserUseCaseInputDto{
+			input: UserUseCaseInputDto{
 				ID:        testID,
 				Name:      testName,
 				AvatarURL: testAvatarURL,
@@ -240,7 +240,7 @@ func TestUpdateUserUseCase_Run(t *testing.T) {
 			tt := tt
 			t.Parallel()
 			tt.mockFunc()
-			err := uc.Run(context.Background(), tt.input)
+			err := uc.Update(context.Background(), tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -249,22 +249,20 @@ func TestUpdateUserUseCase_Run(t *testing.T) {
 	}
 }
 
-func TestDeleteUserUseCase_Run(t *testing.T) {
+func TestUserUseCase_Delete(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockUserRepo := userDomain.NewMockUserRepository(ctrl)
-	uc := newDeleteUserUseCase(mockUserRepo)
+	uc := NewUserUseCase(mockUserRepo)
 
 	tests := []struct {
 		name     string
-		input    DeleteUserUseCaseInputDto
+		input    string
 		mockFunc func()
 		wantErr  bool
 	}{
 		{
-			name: "正常系",
-			input: DeleteUserUseCaseInputDto{
-				ID: testID,
-			},
+			name:  "正常系",
+			input: testID,
 			mockFunc: func() {
 				mockUserRepo.EXPECT().Delete(gomock.Any(), gomock.Any()).Return(nil)
 			},
@@ -277,7 +275,7 @@ func TestDeleteUserUseCase_Run(t *testing.T) {
 			tt := tt
 			t.Parallel()
 			tt.mockFunc()
-			err := uc.Run(context.Background(), tt.input)
+			err := uc.Delete(context.Background(), tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
