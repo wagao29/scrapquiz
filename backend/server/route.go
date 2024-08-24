@@ -1,9 +1,13 @@
 package server
 
 import (
+	"scrapquiz/infrastructure/mysql/query_service"
 	"scrapquiz/infrastructure/mysql/repository"
 	"scrapquiz/interface/health_check"
+
+	quizInterface "scrapquiz/interface/quiz"
 	userInterface "scrapquiz/interface/user"
+	quizUseCase "scrapquiz/usecase/quiz"
 	userUseCase "scrapquiz/usecase/user"
 
 	"github.com/labstack/echo/v4"
@@ -19,6 +23,7 @@ func InitRoute(e *echo.Echo) {
 	v1.GET("/health", health_check.HealthCheck)
 
 	userRoute(v1)
+	quizzesRoute(v1)
 }
 
 func userRoute(r *echo.Group) {
@@ -30,4 +35,15 @@ func userRoute(r *echo.Group) {
 	group.POST("", h.PostUsers)
 	group.PUT("/:id", h.PutUser)
 	group.DELETE("/:id", h.DeleteUserByID)
+}
+
+func quizzesRoute(r *echo.Group) {
+	quizRepository := repository.NewQuizRepository()
+	quizQueryService := query_service.NewQuizQueryService()
+	h := quizInterface.NewHandler(quizUseCase.NewQuizUseCase(quizRepository, quizQueryService))
+	group := r.Group("/quizzes")
+	group.GET("/:id", h.GetQuizByID)
+	group.GET("", h.GetQuizzes)
+	group.POST("", h.PostQuiz)
+	group.DELETE("/:id", h.DeleteQuizByID)
 }

@@ -13,7 +13,7 @@ SELECT
   users.avatar_url AS user_avatar_url
 FROM
   quizzes
-INNER JOIN users ON quiz.user_id = users.id
+INNER JOIN users ON quizzes.user_id = users.id
 WHERE
   quizzes.id = ?;
 
@@ -32,7 +32,7 @@ SELECT
   users.avatar_url AS user_avatar_url
 FROM
   quizzes
-INNER JOIN users ON quiz.user_id = users.id
+INNER JOIN users ON quizzes.user_id = users.id
 WHERE
   user_id = ?
 LIMIT ? OFFSET ?;
@@ -52,7 +52,7 @@ SELECT
   users.avatar_url AS user_avatar_url
 FROM
   quizzes
-INNER JOIN users ON quiz.user_id = users.id
+INNER JOIN users ON quizzes.user_id = users.id
 ORDER BY id DESC
 LIMIT ? OFFSET ?;
 

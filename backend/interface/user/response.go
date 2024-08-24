@@ -7,7 +7,7 @@ type (
 )
 
 type GetUsersResponse = struct {
-	User []userResponseModel `json:"users"`
+	Users []userResponseModel `json:"users"`
 }
 
 type userResponseModel struct {
