@@ -19,12 +19,25 @@ type AnswerUseCaseOutputDto struct {
 
 type AnswerUseCase struct {
 	answerRepo answerDomain.AnswerRepository
+	answerQS   AnswerQueryService
 }
 
-func NewAnswerUseCase(answerRepo answerDomain.AnswerRepository) *AnswerUseCase {
+func NewAnswerUseCase(
+	answerRepo answerDomain.AnswerRepository,
+	answerQS AnswerQueryService,
+) *AnswerUseCase {
 	return &AnswerUseCase{
 		answerRepo: answerRepo,
+		answerQS:   answerQS,
 	}
+}
+
+func (uc *AnswerUseCase) FetchAnswerCountsByQuizID(ctx context.Context, id string) (*AnswerQueryServiceDto, error) {
+	quiz, err := uc.answerQS.FetchAnswerCountsByQuizID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return quiz, nil
 }
 
 func (uc *AnswerUseCase) Save(ctx context.Context, dto AnswerUseCaseInputDto) (*AnswerUseCaseOutputDto, error) {
