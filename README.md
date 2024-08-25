@@ -49,6 +49,7 @@ sqlc generate
 mockgen -package user -source domain/user/user_repository.go -destination domain/user/mock_user_repository.go
 mockgen -package quiz -source domain/quiz/quiz_repository.go -destination domain/quiz/mock_quiz_repository.go
 mockgen -package quiz -source usecase/quiz/quiz_query_service.go -destination usecase/quiz/mock_quiz_query_service.go
+mockgen -package answer -source domain/answer/answer_repository.go -destination domain/answer/mock_answer_repository.go
 ```
 
 ### テスト実行
