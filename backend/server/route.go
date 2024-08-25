@@ -5,8 +5,10 @@ import (
 	"scrapquiz/infrastructure/mysql/repository"
 	"scrapquiz/interface/health_check"
 
+	answerInterface "scrapquiz/interface/answer"
 	quizInterface "scrapquiz/interface/quiz"
 	userInterface "scrapquiz/interface/user"
+	answerUseCase "scrapquiz/usecase/answer"
 	quizUseCase "scrapquiz/usecase/quiz"
 	userUseCase "scrapquiz/usecase/user"
 
@@ -40,10 +42,16 @@ func userRoute(r *echo.Group) {
 func quizzesRoute(r *echo.Group) {
 	quizRepository := repository.NewQuizRepository()
 	quizQueryService := query_service.NewQuizQueryService()
-	h := quizInterface.NewHandler(quizUseCase.NewQuizUseCase(quizRepository, quizQueryService))
+	answerRepository := repository.NewAnswerRepository()
+	answerQueryService := query_service.NewAnswerQueryService()
+	qh := quizInterface.NewHandler(quizUseCase.NewQuizUseCase(quizRepository, quizQueryService))
+	ah := answerInterface.NewHandler(answerUseCase.NewAnswerUseCase(answerRepository, answerQueryService))
+
 	group := r.Group("/quizzes")
-	group.GET("/:id", h.GetQuizByID)
-	group.GET("", h.GetQuizzes)
-	group.POST("", h.PostQuiz)
-	group.DELETE("/:id", h.DeleteQuizByID)
+	group.GET("/:id", qh.GetQuizByID)
+	group.GET("", qh.GetQuizzes)
+	group.POST("", qh.PostQuiz)
+	group.DELETE("/:id", qh.DeleteQuizByID)
+	group.GET("/:id/answer_counts", ah.GetAnswerCountsByAnswerID)
+	group.POST("/:id/answers", ah.PostAnswer)
 }

@@ -19,8 +19,11 @@ curl --include -X DELETE "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9
 
 curl --include -X POST -H "Content-Type: application/json" -d @quiz.json "http://localhost:8080/v1/quizzes"
 curl --include "http://localhost:8080/v1/quizzes?limit=10&offset=0"
-curl --include "http://localhost:8080/v1/quizzes/01J62HMVN1DARH0YR7SR996QRP"
-curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J62HMVN1DARH0YR7SR996QRP"
+curl --include "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
+curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
+
+curl --include -X POST -H "Content-Type: application/json" -d @answer.json "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94/answers"
+curl --include "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94/answer_counts"
 ```
 
 ### DB 接続
