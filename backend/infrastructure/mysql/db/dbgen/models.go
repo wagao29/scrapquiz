@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+type Answer struct {
+	QuizID    string    `json:"quiz_id"`
+	UserID    string    `json:"user_id"`
+	AnswerNum int8      `json:"answer_num"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 type Quiz struct {
 	ID          string         `json:"id"`
 	UserID      string         `json:"user_id"`
