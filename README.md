@@ -61,3 +61,18 @@ mockgen -package answer -source usecase/answer/answer_query_service.go -destinat
 ```shell
 go test -v ./...
 ```
+
+## frontend
+
+### 起動
+
+```shell
+npm install
+npm run dev
+```
+
+### shadcn/ui コンポーネントのインストール
+
+```shell
+npx shadcn-ui@latest add button
+```
