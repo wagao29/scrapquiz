@@ -19,26 +19,6 @@ type User struct {
 }
 
 func NewUser(id string, name string, avatarURL string) (*User, error) {
-	return newUser(
-		id,
-		name,
-		avatarURL,
-	)
-}
-
-func (u *User) ID() string {
-	return u.id
-}
-
-func (u *User) Name() string {
-	return u.name
-}
-
-func (u *User) AvatarURL() string {
-	return u.avatarURL
-}
-
-func newUser(id string, name string, avatarURL string) (*User, error) {
 	if utf8.RuneCountInString(name) < minNameLength || utf8.RuneCountInString(name) > maxNameLength {
 		return nil, utilsError.NewBadRequestError("user name length is invalid")
 	}
@@ -52,4 +32,16 @@ func newUser(id string, name string, avatarURL string) (*User, error) {
 		name:      name,
 		avatarURL: avatarURL,
 	}, nil
+}
+
+func (u *User) ID() string {
+	return u.id
+}
+
+func (u *User) Name() string {
+	return u.name
+}
+
+func (u *User) AvatarURL() string {
+	return u.avatarURL
 }
