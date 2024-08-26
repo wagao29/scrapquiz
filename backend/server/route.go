@@ -5,12 +5,12 @@ import (
 	"scrapquiz/infrastructure/mysql/repository"
 	"scrapquiz/interface/health_check"
 
+	answerUseCase "scrapquiz/application/answer"
+	quizUseCase "scrapquiz/application/quiz"
+	userUseCase "scrapquiz/application/user"
 	answerInterface "scrapquiz/interface/answer"
 	quizInterface "scrapquiz/interface/quiz"
 	userInterface "scrapquiz/interface/user"
-	answerUseCase "scrapquiz/usecase/answer"
-	quizUseCase "scrapquiz/usecase/quiz"
-	userUseCase "scrapquiz/usecase/user"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

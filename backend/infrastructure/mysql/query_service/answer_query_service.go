@@ -7,7 +7,7 @@ import (
 
 	"scrapquiz/infrastructure/mysql/db"
 
-	answerUseCase "scrapquiz/usecase/answer"
+	answerUseCase "scrapquiz/application/answer"
 	utilsError "scrapquiz/utils/error"
 )
 

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	quizUseCase "scrapquiz/usecase/quiz"
+	quizUseCase "scrapquiz/application/quiz"
 	utilsError "scrapquiz/utils/error"
 	"scrapquiz/utils/validator"
 

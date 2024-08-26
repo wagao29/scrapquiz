@@ -9,7 +9,7 @@ import (
 	"scrapquiz/infrastructure/mysql/db"
 	"scrapquiz/infrastructure/mysql/db/dbgen"
 
-	quizUseCase "scrapquiz/usecase/quiz"
+	quizUseCase "scrapquiz/application/quiz"
 	utilsError "scrapquiz/utils/error"
 	utilsSQL "scrapquiz/utils/sql"
 )

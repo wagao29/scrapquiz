@@ -3,7 +3,7 @@ package user
 import (
 	"net/http"
 
-	userUseCase "scrapquiz/usecase/user"
+	userUseCase "scrapquiz/application/user"
 	utilsError "scrapquiz/utils/error"
 	"scrapquiz/utils/validator"
 

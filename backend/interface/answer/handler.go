@@ -3,7 +3,7 @@ package answer
 import (
 	"net/http"
 
-	answerUseCase "scrapquiz/usecase/answer"
+	answerUseCase "scrapquiz/application/answer"
 	utilsError "scrapquiz/utils/error"
 	"scrapquiz/utils/validator"
 
