@@ -13,5 +13,5 @@ type GetUsersResponse = struct {
 type userResponseModel struct {
 	ID        string `json:"id"`
 	Name      string `json:"name"`
-	AvatarURL string `json:"avatar_url"`
+	AvatarURL string `json:"avatarUrl"`
 }

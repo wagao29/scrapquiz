@@ -12,7 +12,7 @@ docker-compose up --build
 
 ```shell
 curl --include -X POST -H "Content-Type: application/json" -d @user.json "http://localhost:8080/v1/users"
-curl --include -X PUT -H "Content-Type: application/json" -d '{"name":"二郎", "avatar_url":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
+curl --include -X PUT -H "Content-Type: application/json" -d '{"name":"二郎", "avatarUrl":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
 curl --include "http://localhost:8080/v1/users"
 curl --include "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
 curl --include -X DELETE "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"

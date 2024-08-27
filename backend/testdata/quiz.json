@@ -1,7 +1,7 @@
 {
-  "user_id": "01FVSHW3SER8977QCJBYZD9HAW",
+  "userId": "01FVSHW3SER8977QCJBYZD9HAW",
   "content": "問題本文がここに入ります",
   "options": ["選択肢1", "選択肢2", "選択肢3", "選択肢4"],
-  "correct_num": 2,
+  "correctNum": 2,
   "explanation": "解説文がここに入ります"
 }
