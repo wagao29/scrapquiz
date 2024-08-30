@@ -10,3 +10,10 @@ export const quizSchema = z.object({
   userName: z.string(),
   userAvatarUrl: z.string().url(),
 });
+
+export const answerCountsSchema = z.object({
+  answerNum1Count: z.number().min(0),
+  answerNum2Count: z.number().min(0),
+  answerNum3Count: z.number().min(0),
+  answerNum4Count: z.number().min(0),
+});
