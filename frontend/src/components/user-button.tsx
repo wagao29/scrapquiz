@@ -21,8 +21,8 @@ export function UserButton({
       <Link href={`/users/${id}`} className={cn("space-x-1.5", className)}>
         <Avatar>
           <AvatarImage
-            width={30}
-            height={30}
+            width={35}
+            height={35}
             className="rounded-full"
             src={avatarUrl}
             alt={`${name}のアイコン画像`}
