@@ -7,7 +7,7 @@ export default async function Page() {
   if (!quiz) notFound();
 
   return (
-    <main className="flex flex-col gap-4 items-center m-4">
+    <main className="flex flex-col gap-4 items-center mt-4">
       <QuizCard quiz={quiz} />
       <QuizCard quiz={quiz} />
       <QuizCard quiz={quiz} />
