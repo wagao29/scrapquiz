@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	maxOptionLength      = 200
+	maxOptionLength      = 100
 	maxContentLength     = 1000
 	maxExplanationLength = 500
 )
