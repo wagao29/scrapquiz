@@ -5,5 +5,5 @@ type PostQuizRequest struct {
 	Content     string   `json:"content" validate:"required"`
 	Options     []string `json:"options" validate:"required"`
 	CorrectNum  int      `json:"correctNum" validate:"required"`
-	Explanation string   `json:"explanation" validate:"required"`
+	Explanation string   `json:"explanation"`
 }

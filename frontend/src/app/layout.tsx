@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${inter.className}`}>
-        <Header />
-        {children}
+        <SessionProvider>
+          <Header />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

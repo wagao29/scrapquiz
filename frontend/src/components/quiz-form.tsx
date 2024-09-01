@@ -18,6 +18,7 @@ import {
   MAX_QUIZ_EXPLANATION,
   MAX_QUIZ_OPTION,
 } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Textarea } from "./ui/textarea";
@@ -68,6 +69,8 @@ const formSchema = z.object({
 });
 
 export const QuizForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,8 +84,29 @@ export const QuizForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const options: string[] = [];
+    for (const [key, value] of Object.entries(values)) {
+      if (key.startsWith("option")) {
+        options.push(value);
+      }
+    }
+    const data = {
+      content: values.content,
+      correctNum: Number(values.correctNum),
+      options: options,
+      explanation: values.explanation,
+    };
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch("/api/quizzes/create", params);
+    const json = await response.json();
+    router.push(`/quizzes/${json.id}`);
   }
 
   return (

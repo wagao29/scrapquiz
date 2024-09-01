@@ -3,7 +3,7 @@ import { fetchQuiz } from "@/lib/apis";
 import { notFound } from "next/navigation";
 
 export default async function Page() {
-  const quiz = await fetchQuiz("01J62PPM6FDXWE3R1NFFN1DA94");
+  const quiz = await fetchQuiz("01J6PG3VBKXF0TBBHESBAG9W3Y");
   if (!quiz) notFound();
 
   return (

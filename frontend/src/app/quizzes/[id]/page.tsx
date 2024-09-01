@@ -1,7 +1,14 @@
+import { QuizCard } from "@/components/quiz-card";
+import { fetchQuiz } from "@/lib/apis";
+import { notFound } from "next/navigation";
+
 export default async function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
+  const quiz = await fetchQuiz(params.id);
+  if (!quiz) notFound();
 
   return (
-    <main className="flex flex-col gap-4 items-center mt-4">{`クイズ詳細画面 (id: ${id})`}</main>
+    <main className="flex flex-col gap-4 items-center mt-10 px-4">
+      <QuizCard quiz={quiz} />
+    </main>
   );
 }

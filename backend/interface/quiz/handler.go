@@ -109,6 +109,7 @@ func (h handler) PostQuiz(c echo.Context) error {
 
 	res := PostQuizResponse{
 		ID:          outputDto.ID,
+		UserID:      outputDto.UserID,
 		Content:     outputDto.Content,
 		Options:     outputDto.Options,
 		CorrectNum:  outputDto.CorrectNum,
