@@ -4,6 +4,7 @@ import {
   ENDPOINT_URL,
   FETCH_ANSWER_COUNTS_REVALIDATION_SEC,
   FETCH_LATEST_QUIZZES_REVALIDATION_SEC,
+  FETCH_QUIZ_COUNTS_REVALIDATION_SEC,
   FETCH_QUIZ_REVALIDATION_SEC,
   FETCH_QUIZZES_LIMIT,
 } from "./constants";
@@ -22,6 +23,24 @@ export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
     return quizSchema.parse(json);
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function fetchQuizCounts(): Promise<number> {
+  try {
+    const response = await fetch(`${ENDPOINT_URL}/quizzes/counts`, {
+      next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
+    });
+    if (!response.ok) {
+      throw new Error(
+        `[fetchQuizCounts] error status code: ${response.status}`
+      );
+    }
+    const json = await response.json();
+    return json.quizCounts || 0;
+  } catch (error) {
+    console.error(error);
+    return 0;
   }
 }
 
