@@ -19,6 +19,7 @@ curl --include -X DELETE "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9
 
 curl --include -X POST -H "Content-Type: application/json" -d @quiz.json "http://localhost:8080/v1/quizzes"
 curl --include "http://localhost:8080/v1/quizzes?limit=10&offset=0"
+curl --include "http://localhost:8080/v1/quizzes/counts"
 curl --include "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
 curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
 
@@ -51,9 +52,9 @@ sqlc generate
 ```shell
 mockgen -package user -source domain/user/user_repository.go -destination domain/user/mock_user_repository.go
 mockgen -package quiz -source domain/quiz/quiz_repository.go -destination domain/quiz/mock_quiz_repository.go
-mockgen -package quiz -source usecase/quiz/quiz_query_service.go -destination usecase/quiz/mock_quiz_query_service.go
+mockgen -package quiz -source application/quiz/quiz_query_service.go -destination application/quiz/mock_quiz_query_service.go
 mockgen -package answer -source domain/answer/answer_repository.go -destination domain/answer/mock_answer_repository.go
-mockgen -package answer -source usecase/answer/answer_query_service.go -destination usecase/answer/mock_answer_query_service.go
+mockgen -package answer -source application/answer/answer_query_service.go -destination application/answer/mock_answer_query_service.go
 ```
 
 ### テスト実行

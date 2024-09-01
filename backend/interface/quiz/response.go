@@ -4,6 +4,10 @@ type FetchQuizzesResponse = struct {
 	Quizzes []FetchQuizResponse `json:"quizzes"`
 }
 
+type FetchQuizCountsResponse struct {
+	QuizCounts int `json:"quizCounts"`
+}
+
 type PostQuizResponse struct {
 	ID          string   `json:"id"`
 	UserID      string   `json:"userId"`

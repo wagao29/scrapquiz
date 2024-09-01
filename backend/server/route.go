@@ -48,6 +48,7 @@ func quizzesRoute(r *echo.Group) {
 	ah := answerInterface.NewHandler(answerUseCase.NewAnswerUseCase(answerRepository, answerQueryService))
 
 	group := r.Group("/quizzes")
+	group.GET("/counts", qh.GetQuizCounts)
 	group.GET("/:id", qh.GetQuizByID)
 	group.GET("", qh.GetQuizzes)
 	group.POST("", qh.PostQuiz)

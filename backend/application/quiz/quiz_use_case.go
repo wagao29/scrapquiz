@@ -71,6 +71,16 @@ func (uc *QuizUseCase) FetchLatestQuizzes(
 	return quizzes, nil
 }
 
+func (uc *QuizUseCase) FetchQuizCounts(
+	ctx context.Context,
+) (int, error) {
+	quizCounts, err := uc.quizQueryService.FetchQuizCounts(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return quizCounts, err
+}
+
 func (uc *QuizUseCase) Save(ctx context.Context, dto QuizUseCaseSaveInputDto) (*QuizUseCaseSaveOutputDto, error) {
 	quiz, err := quizDomain.NewQuiz(dto.UserID, dto.Content, dto.Options, dto.CorrectNum, dto.Explanation)
 	if err != nil {

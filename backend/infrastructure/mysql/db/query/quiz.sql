@@ -56,6 +56,9 @@ INNER JOIN users ON quizzes.user_id = users.id
 ORDER BY id DESC
 LIMIT ? OFFSET ?;
 
+-- name: FetchQuizCounts :one
+SELECT COUNT(*) FROM quizzes;
+
 -- name: InsertQuiz :exec
 INSERT INTO
   quizzes (id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at)

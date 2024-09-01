@@ -88,6 +88,48 @@ func TestQuizUseCase_FetchQuizID(t *testing.T) {
 	}
 }
 
+func TestQuizUseCase_FetchQuizCounts(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockQuizRepo := quizDomain.NewMockQuizRepository(ctrl)
+	mockQuizQS := NewMockQuizQueryService(ctrl)
+	uc := NewQuizUseCase(mockQuizRepo, mockQuizQS)
+
+	tests := []struct {
+		name     string
+		mockFunc func()
+		want     int
+		wantErr  bool
+	}{
+		{
+			name: "正常系",
+			mockFunc: func() {
+				mockQuizQS.
+					EXPECT().
+					FetchQuizCounts(gomock.Any()).
+					Return(123, nil)
+			},
+			want:    123,
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt := tt
+			t.Parallel()
+			tt.mockFunc()
+			got, err := uc.FetchQuizCounts(context.Background())
+			if (err != nil) != tt.wantErr {
+				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("diff = %v", diff)
+			}
+		})
+	}
+}
+
 func TestQuizUseCase_FetchQuizzesByUserID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mockQuizRepo := quizDomain.NewMockQuizRepository(ctrl)

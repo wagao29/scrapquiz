@@ -83,6 +83,15 @@ func (h handler) GetQuizzes(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
+func (h handler) GetQuizCounts(c echo.Context) error {
+	quizCounts, err := h.uc.FetchQuizCounts(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	res := FetchQuizCountsResponse{quizCounts}
+	return c.JSON(http.StatusOK, res)
+}
+
 func (h handler) PostQuiz(c echo.Context) error {
 	var params PostQuizRequest
 	err := c.Bind(&params)

@@ -129,3 +129,15 @@ func (q *quizQueryService) FetchLatestQuizzes(
 	}
 	return dtos, nil
 }
+
+func (q *quizQueryService) FetchQuizCounts(
+	ctx context.Context,
+) (int, error) {
+	query := db.GetQuery(ctx)
+	quizCounts, err := query.FetchQuizCounts(ctx)
+	if err != nil {
+		log.Printf("[Error] QuizQueryService FetchQuizCounts(): %v", err)
+		return 0, err
+	}
+	return int(quizCounts), nil
+}
