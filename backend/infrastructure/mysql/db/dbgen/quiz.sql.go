@@ -159,6 +159,19 @@ func (q *Queries) FetchQuizCounts(ctx context.Context) (int64, error) {
 	return count, err
 }
 
+const fetchQuizCountsByUserID = `-- name: FetchQuizCountsByUserID :one
+SELECT COUNT(*) FROM quizzes
+WHERE
+  user_id = ?
+`
+
+func (q *Queries) FetchQuizCountsByUserID(ctx context.Context, userID string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, fetchQuizCountsByUserID, userID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const fetchQuizzesByUserID = `-- name: FetchQuizzesByUserID :many
 SELECT
   quizzes.id,

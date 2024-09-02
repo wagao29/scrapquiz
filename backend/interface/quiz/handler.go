@@ -84,7 +84,18 @@ func (h handler) GetQuizzes(c echo.Context) error {
 }
 
 func (h handler) GetQuizCounts(c echo.Context) error {
-	quizCounts, err := h.uc.FetchQuizCounts(c.Request().Context())
+	userID := c.QueryParam("user_id")
+
+	var (
+		quizCounts int
+		err        error
+	)
+	if len(userID) == 0 {
+		quizCounts, err = h.uc.FetchQuizCounts(c.Request().Context())
+
+	} else {
+		quizCounts, err = h.uc.FetchQuizCountsByUserID(c.Request().Context(), userID)
+	}
 	if err != nil {
 		return err
 	}

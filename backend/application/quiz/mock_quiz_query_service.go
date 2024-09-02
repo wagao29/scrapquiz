@@ -84,6 +84,21 @@ func (mr *MockQuizQueryServiceMockRecorder) FetchQuizCounts(ctx any) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchQuizCounts", reflect.TypeOf((*MockQuizQueryService)(nil).FetchQuizCounts), ctx)
 }
 
+// FetchQuizCountsByUserID mocks base method.
+func (m *MockQuizQueryService) FetchQuizCountsByUserID(ctx context.Context, userID string) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchQuizCountsByUserID", ctx, userID)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchQuizCountsByUserID indicates an expected call of FetchQuizCountsByUserID.
+func (mr *MockQuizQueryServiceMockRecorder) FetchQuizCountsByUserID(ctx, userID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchQuizCountsByUserID", reflect.TypeOf((*MockQuizQueryService)(nil).FetchQuizCountsByUserID), ctx, userID)
+}
+
 // FetchQuizzesByUserID mocks base method.
 func (m *MockQuizQueryService) FetchQuizzesByUserID(ctx context.Context, userID string, limit, offset int) ([]*QuizQueryServiceDto, error) {
 	m.ctrl.T.Helper()

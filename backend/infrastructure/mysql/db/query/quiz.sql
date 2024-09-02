@@ -59,6 +59,11 @@ LIMIT ? OFFSET ?;
 -- name: FetchQuizCounts :one
 SELECT COUNT(*) FROM quizzes;
 
+-- name: FetchQuizCountsByUserID :one
+SELECT COUNT(*) FROM quizzes
+WHERE
+  user_id = ?;
+
 -- name: InsertQuiz :exec
 INSERT INTO
   quizzes (id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at)

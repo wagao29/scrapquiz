@@ -141,3 +141,16 @@ func (q *quizQueryService) FetchQuizCounts(
 	}
 	return int(quizCounts), nil
 }
+
+func (q *quizQueryService) FetchQuizCountsByUserID(
+	ctx context.Context,
+	userID string,
+) (int, error) {
+	query := db.GetQuery(ctx)
+	quizCounts, err := query.FetchQuizCountsByUserID(ctx, userID)
+	if err != nil {
+		log.Printf("[Error] QuizQueryService FetchQuizCountsByUserID(): %v", err)
+		return 0, err
+	}
+	return int(quizCounts), nil
+}
