@@ -18,17 +18,17 @@ export default async function Page({
   searchParams: { [key: string]: string };
 }) {
   const pageNum = Number(searchParams.page || 1);
-  const [quizCounts, latestQuizzes] = await Promise.all([
+  const [quizCounts, quizzes] = await Promise.all([
     fetchQuizCounts(),
     fetchLatestQuizzes((pageNum - 1) * FETCH_QUIZZES_LIMIT),
   ]);
-  if ((pageNum - 1) * FETCH_QUIZZES_LIMIT > quizCounts || !latestQuizzes) {
+  if ((pageNum - 1) * FETCH_QUIZZES_LIMIT > quizCounts || !quizzes) {
     notFound();
   }
 
   return (
     <main className="flex flex-col gap-4 items-center m-4">
-      {latestQuizzes.quizzes.map((quiz) => (
+      {quizzes.quizzes.map((quiz) => (
         <QuizCard quiz={quiz} />
       ))}
       <Pagination>

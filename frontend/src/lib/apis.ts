@@ -6,6 +6,7 @@ import {
   FETCH_LATEST_QUIZZES_REVALIDATION_SEC,
   FETCH_QUIZ_COUNTS_REVALIDATION_SEC,
   FETCH_QUIZ_REVALIDATION_SEC,
+  FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC,
   FETCH_QUIZZES_LIMIT,
 } from "./constants";
 import { answerCountsSchema, quizSchema, quizzesSchema } from "./schemas";
@@ -26,11 +27,14 @@ export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
   }
 }
 
-export async function fetchQuizCounts(): Promise<number> {
+export async function fetchQuizCounts(userId?: string): Promise<number> {
   try {
-    const response = await fetch(`${ENDPOINT_URL}/quizzes/counts`, {
-      next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
-    });
+    const response = await fetch(
+      `${ENDPOINT_URL}/quizzes/counts${userId ? `?user_id=${userId}` : ""}`,
+      {
+        next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
+      }
+    );
     if (!response.ok) {
       throw new Error(
         `[fetchQuizCounts] error status code: ${response.status}`
@@ -52,6 +56,29 @@ export async function fetchLatestQuizzes(
       `${ENDPOINT_URL}/quizzes?limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
       {
         next: { revalidate: FETCH_LATEST_QUIZZES_REVALIDATION_SEC },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `[fetchLatestQuizzes] error status code: ${response.status}`
+      );
+    }
+    const json = await response.json();
+    return quizzesSchema.parse(json);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchQuizzesByUserId(
+  userId: string,
+  offset: number
+): Promise<Quizzes | undefined> {
+  try {
+    const response = await fetch(
+      `${ENDPOINT_URL}/quizzes?user_id=${userId}&limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
+      {
+        next: { revalidate: FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC },
       }
     );
     if (!response.ok) {
