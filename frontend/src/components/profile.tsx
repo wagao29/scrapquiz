@@ -1,5 +1,5 @@
+import { signOut } from "@/lib/auth";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { Button } from "./ui/button";
 type Props = {
