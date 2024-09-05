@@ -104,7 +104,7 @@ export const QuizForm = () => {
       },
       body: JSON.stringify(data),
     };
-    const response = await fetch("/api/quizzes/create", params);
+    const response = await fetch("/api/quizzes", params);
     const json = await response.json();
     router.push(`/quizzes/${json.id}`);
   }
