@@ -1,6 +1,5 @@
 import { signOut } from "@/lib/auth";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { redirect } from "next/navigation";
 import { Button } from "./ui/button";
 type Props = {
   userName: string;
@@ -36,8 +35,7 @@ export default async function Profile({
         <form
           action={async () => {
             "use server";
-            await signOut();
-            redirect("/");
+            await signOut({ redirectTo: "/" });
           }}
         >
           <Button

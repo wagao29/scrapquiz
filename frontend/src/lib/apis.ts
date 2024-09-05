@@ -8,9 +8,30 @@ import {
   FETCH_QUIZ_REVALIDATION_SEC,
   FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC,
   FETCH_QUIZZES_LIMIT,
+  FETCH_USER_REVALIDATION_SEC,
 } from "./constants";
-import { answerCountsSchema, quizSchema, quizzesSchema } from "./schemas";
-import { AnswerCounts, Quiz, Quizzes } from "./types";
+import {
+  answerCountsSchema,
+  quizSchema,
+  quizzesSchema,
+  userSchema,
+} from "./schemas";
+import { AnswerCounts, Quiz, Quizzes, User } from "./types";
+
+export async function fetchUser(userId: string): Promise<User | undefined> {
+  try {
+    const response = await fetch(`${ENDPOINT_URL}/users/${userId}`, {
+      next: { revalidate: FETCH_USER_REVALIDATION_SEC },
+    });
+    if (!response.ok) {
+      throw new Error(`[fetchUser] error status code: ${response.status}`);
+    }
+    const json = await response.json();
+    return userSchema.parse(json);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
   try {
@@ -110,6 +131,61 @@ export async function fetchAnswerCounts(
     }
     const json = await response.json();
     return answerCountsSchema.parse(json);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createUser(
+  userId: string,
+  userName: string,
+  userImage: string
+): Promise<User | undefined> {
+  try {
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: userId,
+        name: userName,
+        avatarUrl: userImage,
+      }),
+    };
+    const response = await fetch(`${ENDPOINT_URL}/users`, params);
+    if (!response.ok) {
+      throw new Error(`[createUser] error status code: ${response.status}`);
+    }
+    const json = await response.json();
+    return userSchema.parse(json);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function updateUser(
+  userId: string,
+  userName: string,
+  userImage: string
+): Promise<User | undefined> {
+  try {
+    const params = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: userName,
+        avatarUrl: userImage,
+      }),
+    };
+    const response = await fetch(`${ENDPOINT_URL}/users/${userId}`, params);
+    if (!response.ok) {
+      throw new Error(`[updateUser] error status code: ${response.status}`);
+    }
+    const json = await response.json();
+    return userSchema.parse(json);
   } catch (error) {
     console.error(error);
   }

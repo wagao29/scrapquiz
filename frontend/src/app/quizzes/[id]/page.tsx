@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main className="flex flex-col gap-4 items-center mt-10 px-4">
-      <QuizCard quiz={quiz} />
+      <QuizCard key={quiz.id} quiz={quiz} />
     </main>
   );
 }

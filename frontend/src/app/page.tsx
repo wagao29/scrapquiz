@@ -29,7 +29,7 @@ export default async function Page({
   return (
     <main className="flex flex-col gap-4 items-center m-4">
       {quizzes.quizzes.map((quiz) => (
-        <QuizCard quiz={quiz} />
+        <QuizCard key={quiz.id} quiz={quiz} />
       ))}
       <Pagination>
         <PaginationContent>
