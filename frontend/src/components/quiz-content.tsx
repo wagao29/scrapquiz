@@ -40,17 +40,19 @@ export function QuizContent({
               answeredNum={answeredNum}
               className="my-1.5"
               onClick={async () => {
-                setAnsweredNum(index + 1);
-                const params = {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    answerNum: index + 1,
-                  }),
-                };
-                await fetch(`/api/quizzes/${quizId}/answers`, params);
+                if (answeredNum === 0) {
+                  setAnsweredNum(index + 1);
+                  const params = {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      answerNum: index + 1,
+                    }),
+                  };
+                  await fetch(`/api/quizzes/${quizId}/answers`, params);
+                }
               }}
             />
           );
