@@ -37,6 +37,7 @@ export async function QuizCard({
       </CardHeader>
       <CardContent className="py-2">
         <QuizContent
+          quizId={quiz.id}
           content={quiz.content}
           options={quiz.options}
           correctNum={quiz.correctNum}

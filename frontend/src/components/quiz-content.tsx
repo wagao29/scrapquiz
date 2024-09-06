@@ -4,6 +4,7 @@ import { useState } from "react";
 import { OptionButton } from "./option-button";
 
 type Props = {
+  quizId: string;
   content: string;
   options: string[];
   correctNum: number;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export function QuizContent({
+  quizId,
   content,
   explanation,
   options,
@@ -37,8 +39,18 @@ export function QuizContent({
               answerCountsSum={answerCountsSum}
               answeredNum={answeredNum}
               className="my-1.5"
-              onClick={() => {
+              onClick={async () => {
                 setAnsweredNum(index + 1);
+                const params = {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    answerNum: index + 1,
+                  }),
+                };
+                await fetch(`/api/quizzes/${quizId}/answers`, params);
               }}
             />
           );

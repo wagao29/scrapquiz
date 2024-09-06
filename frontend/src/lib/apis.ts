@@ -209,3 +209,28 @@ export async function createQuiz(data: any): Promise<any | undefined> {
     console.error(error);
   }
 }
+
+export async function createAnswer(
+  quizId: string,
+  data: any
+): Promise<any | undefined> {
+  try {
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(
+      `${ENDPOINT_URL}/quizzes/${quizId}/answers`,
+      params
+    );
+    if (!response.ok) {
+      throw new Error(`[createAnswer] error status code: ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
