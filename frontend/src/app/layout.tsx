@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -23,6 +24,7 @@ export default function RootLayout({
           <Header />
           {children}
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   );

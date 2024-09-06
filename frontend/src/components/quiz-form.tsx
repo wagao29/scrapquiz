@@ -19,6 +19,7 @@ import {
   MAX_QUIZ_OPTION,
 } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { toastError, toastSuccess } from "./toasts";
 import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Textarea } from "./ui/textarea";
@@ -105,8 +106,13 @@ export const QuizForm = () => {
       body: JSON.stringify(data),
     };
     const response = await fetch("/api/quizzes", params);
-    const json = await response.json();
-    router.push(`/quizzes/${json.id}`);
+    if (response.ok) {
+      const json = await response.json();
+      toastSuccess("クイズを作成しました");
+      router.push(`/quizzes/${json.id}`);
+    } else {
+      toastError("クイズの作成に失敗しました");
+    }
   }
 
   return (
