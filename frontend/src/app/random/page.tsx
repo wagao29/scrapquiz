@@ -11,8 +11,8 @@ export default async function Page() {
   }
 
   return (
-    <main className="flex flex-col gap-4 items-center m-4">
-      <TabMenu selectValue="random" />
+    <main className="flex flex-col gap-4 items-center mx-4">
+      <TabMenu selectValue="random" className="mb-4" />
       {quizzes.quizzes.map((quiz) => (
         <QuizCard key={quiz.id} quiz={quiz} />
       ))}

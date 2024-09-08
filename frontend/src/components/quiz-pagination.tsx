@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/pagination";
 import { FETCH_QUIZZES_LIMIT } from "@/lib/constants";
 
-type Props = {
+type Props = React.ComponentProps<typeof Pagination> & {
   basePath: string;
   pageNum: number;
   quizCounts: number;
@@ -19,9 +19,10 @@ export default function QuizPagination({
   basePath,
   pageNum,
   quizCounts,
+  ...props
 }: Props) {
   return (
-    <Pagination>
+    <Pagination {...props}>
       <PaginationContent>
         {pageNum > 1 && (
           <>

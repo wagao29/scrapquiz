@@ -20,12 +20,17 @@ export default async function Page({
   }
 
   return (
-    <main className="flex flex-col gap-4 items-center m-4">
-      <TabMenu selectValue="latest" />
+    <main className="flex flex-col gap-4 items-center mx-4">
+      <TabMenu selectValue="latest" className="mb-4" />
       {quizzes.quizzes.map((quiz) => (
         <QuizCard key={quiz.id} quiz={quiz} />
       ))}
-      <QuizPagination basePath="/" pageNum={pageNum} quizCounts={quizCounts} />
+      <QuizPagination
+        basePath="/"
+        pageNum={pageNum}
+        quizCounts={quizCounts}
+        className="my-5"
+      />
     </main>
   );
 }
