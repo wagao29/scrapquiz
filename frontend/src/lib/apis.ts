@@ -168,7 +168,7 @@ export async function updateUser(
   userId: string,
   userName: string,
   userImage: string
-): Promise<User | undefined> {
+): Promise<boolean> {
   try {
     const params = {
       method: "PUT",
@@ -184,10 +184,10 @@ export async function updateUser(
     if (!response.ok) {
       throw new Error(`[updateUser] error status code: ${response.status}`);
     }
-    const json = await response.json();
-    return userSchema.parse(json);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
 
