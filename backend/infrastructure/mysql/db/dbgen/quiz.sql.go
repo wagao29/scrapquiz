@@ -198,6 +198,7 @@ FROM
 INNER JOIN users ON quizzes.user_id = users.id
 WHERE
   user_id = ?
+ORDER BY id DESC
 LIMIT ? OFFSET ?
 `
 
