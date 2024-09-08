@@ -1,10 +1,9 @@
 import { fetchAnswerCounts } from "@/lib/apis";
 import { Quiz } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ShareIcon } from "lucide-react";
 import { QuizContent } from "./quiz-content";
 import { QuizDeleteButton } from "./quiz-delete-button";
-import { Button } from "./ui/button";
+import { QuizShareButton } from "./quiz-share-button";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { UserButton } from "./user-button";
 
@@ -49,9 +48,7 @@ export async function QuizCard({
       </CardContent>
       <CardFooter className="flex gap-0.5 justify-end p-2">
         {deletable && <QuizDeleteButton quizId={quiz.id} />}
-        <Button size="icon" variant="ghost">
-          <ShareIcon color="black"></ShareIcon>
-        </Button>
+        <QuizShareButton quizId={quiz.id} />
       </CardFooter>
     </Card>
   );
