@@ -210,6 +210,21 @@ export async function createQuiz(data: any): Promise<any | undefined> {
   }
 }
 
+export async function deleteQuiz(quizId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error(`[deleteQuiz] error status code: ${response.status}`);
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
 export async function createAnswer(
   quizId: string,
   data: any
