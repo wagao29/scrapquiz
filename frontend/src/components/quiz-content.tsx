@@ -26,7 +26,7 @@ export function QuizContent({
 
   return (
     <div className="flex flex-col px-4">
-      <div>{content}</div>
+      <div className="whitespace-pre-wrap">{content}</div>
       <div className="mt-2.5">
         {options.map((opt, index) => {
           return (
@@ -60,8 +60,8 @@ export function QuizContent({
       </div>
       {answeredNum !== 0 && explanation && (
         <div className="bg-gray-100 p-2.5 mt-2.5">
-          <p>解説</p>
-          <p>{explanation}</p>
+          <span>解説</span>
+          <div className="whitespace-pre-wrap">{explanation}</div>
         </div>
       )}
     </div>
