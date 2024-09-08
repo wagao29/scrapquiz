@@ -44,7 +44,11 @@ export default async function Page({
       <div className="flex flex-col gap-2 mt-8 min-w-[350px] max-w-[850px] w-full">
         <span className="font-semibold">作成したクイズ</span>
         {quizzes?.quizzes.map((quiz) => (
-          <QuizCard key={quiz.id} quiz={quiz} deletable />
+          <QuizCard
+            key={quiz.id}
+            quiz={quiz}
+            deletable={quiz.userId === session?.user?.id}
+          />
         ))}
       </div>
       <Pagination>
