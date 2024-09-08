@@ -133,6 +133,42 @@ func (q *quizQueryService) FetchLatestQuizzes(
 	return dtos, nil
 }
 
+func (q *quizQueryService) FetchRandomQuizzes(
+	ctx context.Context,
+	limit int,
+) ([]*quizUseCase.QuizQueryServiceDto, error) {
+	query := db.GetQuery(ctx)
+	dbQuizzes, err := query.FetchRandomQuizzes(ctx, int32(limit))
+	if err != nil {
+		log.Printf("[Error] QuizQueryService FetchRandomQuizzes(): %v", err)
+		return nil, err
+	}
+	if len(dbQuizzes) == 0 {
+		return nil, utilsError.NewNotFoundError("quiz not found")
+	}
+
+	var dtos []*quizUseCase.QuizQueryServiceDto
+	for _, dbq := range dbQuizzes {
+		dtos = append(dtos, &quizUseCase.QuizQueryServiceDto{
+			ID:      dbq.ID,
+			Content: dbq.Content,
+			Options: []string{
+				dbq.Option1,
+				dbq.Option2,
+				utilsSQL.NullStringToString(dbq.Option3),
+				utilsSQL.NullStringToString(dbq.Option4),
+			},
+			CorrectNum:    int(dbq.CorrectNum),
+			Explanation:   utilsSQL.NullStringToString(dbq.Explanation),
+			UserID:        dbq.UserID,
+			UserName:      dbq.UserName,
+			UserAvatarURL: dbq.UserAvatarUrl,
+			CreatedAt:     dbq.CreatedAt,
+		})
+	}
+	return dtos, nil
+}
+
 func (q *quizQueryService) FetchQuizCounts(
 	ctx context.Context,
 ) (int, error) {

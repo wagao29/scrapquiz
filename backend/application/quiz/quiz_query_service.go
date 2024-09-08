@@ -21,6 +21,7 @@ type QuizQueryService interface {
 	FetchQuizByID(ctx context.Context, userID string) (*QuizQueryServiceDto, error)
 	FetchQuizzesByUserID(ctx context.Context, userID string, limit int, offset int) ([]*QuizQueryServiceDto, error)
 	FetchLatestQuizzes(ctx context.Context, limit int, offset int) ([]*QuizQueryServiceDto, error)
+	FetchRandomQuizzes(ctx context.Context, limit int) ([]*QuizQueryServiceDto, error)
 	FetchQuizCounts(ctx context.Context) (int, error)
 	FetchQuizCountsByUserID(ctx context.Context, userID string) (int, error)
 }

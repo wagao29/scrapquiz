@@ -59,6 +59,26 @@ INNER JOIN users ON quizzes.user_id = users.id
 ORDER BY id DESC
 LIMIT ? OFFSET ?;
 
+-- name: FetchRandomQuizzes :many
+SELECT
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
+FROM
+  quizzes
+INNER JOIN users ON quizzes.user_id = users.id
+ORDER BY RAND()
+LIMIT ?;
+
 -- name: FetchQuizCounts :one
 SELECT COUNT(*) FROM quizzes;
 

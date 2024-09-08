@@ -8,6 +8,7 @@ import {
   FETCH_QUIZ_REVALIDATION_SEC,
   FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC,
   FETCH_QUIZZES_LIMIT,
+  FETCH_RANDOM_QUIZZES_REVALIDATION_SEC,
   FETCH_USER_REVALIDATION_SEC,
 } from "./constants";
 import {
@@ -82,6 +83,26 @@ export async function fetchLatestQuizzes(
     if (!response.ok) {
       throw new Error(
         `[fetchLatestQuizzes] error status code: ${response.status}`
+      );
+    }
+    const json = await response.json();
+    return quizzesSchema.parse(json);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchRandomQuizzes(): Promise<Quizzes | undefined> {
+  try {
+    const response = await fetch(
+      `${ENDPOINT_URL}/quizzes?order=random&limit=${FETCH_QUIZZES_LIMIT}&offset=0`,
+      {
+        next: { revalidate: FETCH_RANDOM_QUIZZES_REVALIDATION_SEC },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `[fetchRandomQuizzes] error status code: ${response.status}`
       );
     }
     const json = await response.json();

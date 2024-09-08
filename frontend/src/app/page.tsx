@@ -1,5 +1,6 @@
 import { QuizCard } from "@/components/quiz-card";
 import QuizPagination from "@/components/quiz-pagination";
+import TabMenu from "@/components/tab-menu";
 import { fetchLatestQuizzes, fetchQuizCounts } from "@/lib/apis";
 import { FETCH_QUIZZES_LIMIT } from "@/lib/constants";
 import { notFound } from "next/navigation";
@@ -20,6 +21,7 @@ export default async function Page({
 
   return (
     <main className="flex flex-col gap-4 items-center m-4">
+      <TabMenu selectValue="latest" />
       {quizzes.quizzes.map((quiz) => (
         <QuizCard key={quiz.id} quiz={quiz} />
       ))}

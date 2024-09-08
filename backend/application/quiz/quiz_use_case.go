@@ -71,6 +71,17 @@ func (uc *QuizUseCase) FetchLatestQuizzes(
 	return quizzes, nil
 }
 
+func (uc *QuizUseCase) FetchRandomQuizzes(
+	ctx context.Context,
+	limit int,
+) ([]*QuizQueryServiceDto, error) {
+	quizzes, err := uc.quizQueryService.FetchRandomQuizzes(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	return quizzes, nil
+}
+
 func (uc *QuizUseCase) FetchQuizCounts(
 	ctx context.Context,
 ) (int, error) {

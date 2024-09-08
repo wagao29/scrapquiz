@@ -258,6 +258,78 @@ func (q *Queries) FetchQuizzesByUserID(ctx context.Context, arg FetchQuizzesByUs
 	return items, nil
 }
 
+const fetchRandomQuizzes = `-- name: FetchRandomQuizzes :many
+SELECT
+  quizzes.id,
+  quizzes.content,
+  quizzes.option_1,
+  quizzes.option_2,
+  quizzes.option_3,
+  quizzes.option_4,
+  quizzes.correct_num,
+  quizzes.explanation,
+  quizzes.user_id,
+  users.name AS user_name,
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
+FROM
+  quizzes
+INNER JOIN users ON quizzes.user_id = users.id
+ORDER BY RAND()
+LIMIT ?
+`
+
+type FetchRandomQuizzesRow struct {
+	ID            string         `json:"id"`
+	Content       string         `json:"content"`
+	Option1       string         `json:"option_1"`
+	Option2       string         `json:"option_2"`
+	Option3       sql.NullString `json:"option_3"`
+	Option4       sql.NullString `json:"option_4"`
+	CorrectNum    int8           `json:"correct_num"`
+	Explanation   sql.NullString `json:"explanation"`
+	UserID        string         `json:"user_id"`
+	UserName      string         `json:"user_name"`
+	UserAvatarUrl string         `json:"user_avatar_url"`
+	CreatedAt     time.Time      `json:"created_at"`
+}
+
+func (q *Queries) FetchRandomQuizzes(ctx context.Context, limit int32) ([]FetchRandomQuizzesRow, error) {
+	rows, err := q.db.QueryContext(ctx, fetchRandomQuizzes, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []FetchRandomQuizzesRow{}
+	for rows.Next() {
+		var i FetchRandomQuizzesRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Content,
+			&i.Option1,
+			&i.Option2,
+			&i.Option3,
+			&i.Option4,
+			&i.CorrectNum,
+			&i.Explanation,
+			&i.UserID,
+			&i.UserName,
+			&i.UserAvatarUrl,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const insertQuiz = `-- name: InsertQuiz :exec
 INSERT INTO
   quizzes (id, user_id, content, option_1, option_2, option_3, option_4, correct_num, explanation, created_at)

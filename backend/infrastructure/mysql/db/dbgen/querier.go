@@ -17,6 +17,7 @@ type Querier interface {
 	FetchQuizCounts(ctx context.Context) (int64, error)
 	FetchQuizCountsByUserID(ctx context.Context, userID string) (int64, error)
 	FetchQuizzesByUserID(ctx context.Context, arg FetchQuizzesByUserIDParams) ([]FetchQuizzesByUserIDRow, error)
+	FetchRandomQuizzes(ctx context.Context, limit int32) ([]FetchRandomQuizzesRow, error)
 	InsertAnswer(ctx context.Context, arg InsertAnswerParams) error
 	InsertQuiz(ctx context.Context, arg InsertQuizParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) error

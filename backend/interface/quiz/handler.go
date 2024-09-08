@@ -43,6 +43,7 @@ func (h handler) GetQuizByID(c echo.Context) error {
 
 func (h handler) GetQuizzes(c echo.Context) error {
 	userID := c.QueryParam("user_id")
+	order := c.QueryParam("order")
 
 	limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -54,8 +55,13 @@ func (h handler) GetQuizzes(c echo.Context) error {
 	}
 
 	var outputDtos []*quizUseCase.QuizQueryServiceDto
-	if userID != "" {
+	if len(userID) != 0 {
 		outputDtos, err = h.uc.FetchQuizzesByUserID(c.Request().Context(), userID, limit, offset)
+		if err != nil {
+			return err
+		}
+	} else if order == "random" {
+		outputDtos, err = h.uc.FetchRandomQuizzes(c.Request().Context(), limit)
 		if err != nil {
 			return err
 		}
