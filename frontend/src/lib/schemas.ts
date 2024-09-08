@@ -15,6 +15,7 @@ export const quizSchema = z.object({
   userId: z.string(),
   userName: z.string(),
   userAvatarUrl: z.string().url(),
+  createdAt: z.string().datetime(),
 });
 
 export const quizzesSchema = z.object({

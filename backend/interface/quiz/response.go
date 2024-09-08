@@ -1,5 +1,7 @@
 package quiz
 
+import "time"
+
 type FetchQuizzesResponse = struct {
 	Quizzes []FetchQuizResponse `json:"quizzes"`
 }
@@ -18,12 +20,13 @@ type PostQuizResponse struct {
 }
 
 type FetchQuizResponse struct {
-	ID            string   `json:"id"`
-	Content       string   `json:"content"`
-	Options       []string `json:"options"`
-	CorrectNum    int      `json:"correctNum"`
-	Explanation   string   `json:"explanation"`
-	UserID        string   `json:"userId"`
-	UserName      string   `json:"userName"`
-	UserAvatarURL string   `json:"userAvatarUrl"`
+	ID            string    `json:"id"`
+	Content       string    `json:"content"`
+	Options       []string  `json:"options"`
+	CorrectNum    int       `json:"correctNum"`
+	Explanation   string    `json:"explanation"`
+	UserID        string    `json:"userId"`
+	UserName      string    `json:"userName"`
+	UserAvatarURL string    `json:"userAvatarUrl"`
+	CreatedAt     time.Time `json:"createdAt"`
 }

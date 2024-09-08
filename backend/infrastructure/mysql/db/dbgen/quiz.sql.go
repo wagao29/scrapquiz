@@ -8,6 +8,7 @@ package dbgen
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const deleteQuiz = `-- name: DeleteQuiz :exec
@@ -33,7 +34,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id
@@ -58,6 +60,7 @@ type FetchLatestQuizzesRow struct {
 	UserID        string         `json:"user_id"`
 	UserName      string         `json:"user_name"`
 	UserAvatarUrl string         `json:"user_avatar_url"`
+	CreatedAt     time.Time      `json:"created_at"`
 }
 
 func (q *Queries) FetchLatestQuizzes(ctx context.Context, arg FetchLatestQuizzesParams) ([]FetchLatestQuizzesRow, error) {
@@ -81,6 +84,7 @@ func (q *Queries) FetchLatestQuizzes(ctx context.Context, arg FetchLatestQuizzes
 			&i.UserID,
 			&i.UserName,
 			&i.UserAvatarUrl,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -107,7 +111,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id
@@ -127,6 +132,7 @@ type FetchQuizByIDRow struct {
 	UserID        string         `json:"user_id"`
 	UserName      string         `json:"user_name"`
 	UserAvatarUrl string         `json:"user_avatar_url"`
+	CreatedAt     time.Time      `json:"created_at"`
 }
 
 func (q *Queries) FetchQuizByID(ctx context.Context, id string) (FetchQuizByIDRow, error) {
@@ -144,6 +150,7 @@ func (q *Queries) FetchQuizByID(ctx context.Context, id string) (FetchQuizByIDRo
 		&i.UserID,
 		&i.UserName,
 		&i.UserAvatarUrl,
+		&i.CreatedAt,
 	)
 	return i, err
 }
@@ -184,7 +191,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id
@@ -211,6 +219,7 @@ type FetchQuizzesByUserIDRow struct {
 	UserID        string         `json:"user_id"`
 	UserName      string         `json:"user_name"`
 	UserAvatarUrl string         `json:"user_avatar_url"`
+	CreatedAt     time.Time      `json:"created_at"`
 }
 
 func (q *Queries) FetchQuizzesByUserID(ctx context.Context, arg FetchQuizzesByUserIDParams) ([]FetchQuizzesByUserIDRow, error) {
@@ -234,6 +243,7 @@ func (q *Queries) FetchQuizzesByUserID(ctx context.Context, arg FetchQuizzesByUs
 			&i.UserID,
 			&i.UserName,
 			&i.UserAvatarUrl,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}

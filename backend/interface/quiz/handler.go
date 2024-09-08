@@ -35,6 +35,7 @@ func (h handler) GetQuizByID(c echo.Context) error {
 		UserID:        outputDto.UserID,
 		UserName:      outputDto.UserName,
 		UserAvatarURL: outputDto.UserAvatarURL,
+		CreatedAt:     outputDto.CreatedAt,
 	}
 
 	return c.JSON(http.StatusOK, res)
@@ -76,6 +77,7 @@ func (h handler) GetQuizzes(c echo.Context) error {
 			UserID:        outputDto.UserID,
 			UserName:      outputDto.UserName,
 			UserAvatarURL: outputDto.UserAvatarURL,
+			CreatedAt:     outputDto.CreatedAt,
 		})
 	}
 	res := FetchQuizzesResponse{fetchQuizzes}

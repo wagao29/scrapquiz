@@ -47,6 +47,7 @@ func (q *quizQueryService) FetchQuizByID(
 		UserID:        dbq.UserID,
 		UserName:      dbq.UserName,
 		UserAvatarURL: dbq.UserAvatarUrl,
+		CreatedAt:     dbq.CreatedAt,
 	}, nil
 }
 
@@ -86,6 +87,7 @@ func (q *quizQueryService) FetchQuizzesByUserID(
 			UserID:        dbq.UserID,
 			UserName:      dbq.UserName,
 			UserAvatarURL: dbq.UserAvatarUrl,
+			CreatedAt:     dbq.CreatedAt,
 		})
 	}
 	return dtos, nil
@@ -125,6 +127,7 @@ func (q *quizQueryService) FetchLatestQuizzes(
 			UserID:        dbq.UserID,
 			UserName:      dbq.UserName,
 			UserAvatarURL: dbq.UserAvatarUrl,
+			CreatedAt:     dbq.CreatedAt,
 		})
 	}
 	return dtos, nil

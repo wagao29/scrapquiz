@@ -10,7 +10,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id
@@ -29,7 +30,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id
@@ -49,7 +51,8 @@ SELECT
   quizzes.explanation,
   quizzes.user_id,
   users.name AS user_name,
-  users.avatar_url AS user_avatar_url
+  users.avatar_url AS user_avatar_url,
+  quizzes.created_at
 FROM
   quizzes
 INNER JOIN users ON quizzes.user_id = users.id

@@ -1,6 +1,6 @@
 import { fetchAnswerCounts } from "@/lib/apis";
 import { Quiz } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { QuizContent } from "./quiz-content";
 import { QuizDeleteButton } from "./quiz-delete-button";
 import { QuizShareButton } from "./quiz-share-button";
@@ -33,7 +33,10 @@ export async function QuizCard({
           name={quiz.userName}
           avatarUrl={quiz.userAvatarUrl}
         />
-        <span className="text-xs ml-10 !mt-0">{answerCountsSum}人が回答</span>
+        <div className="flex gap-1.5 ml-4 text-gray-600">
+          <span className="text-xs !mt-0">{formatDate(quiz.createdAt)}</span>
+          <span className="text-xs !mt-0">{answerCountsSum}人が回答</span>
+        </div>
       </CardHeader>
       <CardContent className="py-2">
         <QuizContent

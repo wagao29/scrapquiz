@@ -1,6 +1,9 @@
 package quiz
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 type QuizQueryServiceDto struct {
 	ID            string
@@ -11,6 +14,7 @@ type QuizQueryServiceDto struct {
 	UserID        string
 	UserName      string
 	UserAvatarURL string
+	CreatedAt     time.Time
 }
 
 type QuizQueryService interface {
