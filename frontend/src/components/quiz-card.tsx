@@ -21,18 +21,26 @@ export async function QuizCard({
   const res = await fetchAnswerCounts(quiz.id);
   const answerCounts = Object.values(res || {});
   const answerCountsSum = answerCounts.reduce((sum, ac) => sum + ac, 0);
+  const correctAnswerRate = Math.floor(
+    (answerCounts[quiz.correctNum - 1] / answerCountsSum) * 100
+  );
 
   return (
     <Card
       className={cn("min-w-[350px] max-w-[850px] w-full", className)}
       {...props}
     >
-      <CardHeader className="flex py-2 px-0 items-start">
-        <UserButton
-          id={quiz.userId}
-          name={quiz.userName}
-          avatarUrl={quiz.userAvatarUrl}
-        />
+      <CardHeader className="flex py-2 px-0">
+        <div className="flex justify-between">
+          <UserButton
+            id={quiz.userId}
+            name={quiz.userName}
+            avatarUrl={quiz.userAvatarUrl}
+          />
+          <span className="text-sm mt-2 mr-3">
+            正答率 {correctAnswerRate || 0}%
+          </span>
+        </div>
         <div className="flex gap-1.5 ml-4 text-gray-600">
           <span className="text-xs !mt-0">{formatDate(quiz.createdAt)}</span>
           <span className="text-xs !mt-0">{answerCountsSum}人が回答</span>
