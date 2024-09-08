@@ -1,14 +1,6 @@
 import Profile from "@/components/profile";
 import { QuizCard } from "@/components/quiz-card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import QuizPagination from "@/components/quiz-pagination";
 import { fetchQuizCounts, fetchQuizzesByUserId, fetchUser } from "@/lib/apis";
 import { auth } from "@/lib/auth";
 import { FETCH_QUIZZES_LIMIT } from "@/lib/constants";
@@ -51,39 +43,11 @@ export default async function Page({
           />
         ))}
       </div>
-      <Pagination>
-        <PaginationContent>
-          {pageNum > 1 && (
-            <>
-              <PaginationItem>
-                <PaginationPrevious
-                  href={`/users/${params.id}/?page=${pageNum - 1}`}
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            </>
-          )}
-          <PaginationItem>
-            <PaginationLink href={`/users/${params.id}/?page=${pageNum}`}>
-              {pageNum}
-            </PaginationLink>
-          </PaginationItem>
-          {pageNum * FETCH_QUIZZES_LIMIT < quizCounts && (
-            <>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  href={`/users/${params.id}/?page=${pageNum + 1}`}
-                />
-              </PaginationItem>
-            </>
-          )}
-        </PaginationContent>
-      </Pagination>
+      <QuizPagination
+        basePath={`/users/${params.id}/`}
+        pageNum={pageNum}
+        quizCounts={quizCounts}
+      />
     </main>
   );
 }

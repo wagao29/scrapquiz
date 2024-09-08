@@ -1,13 +1,5 @@
 import { QuizCard } from "@/components/quiz-card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import QuizPagination from "@/components/quiz-pagination";
 import { fetchLatestQuizzes, fetchQuizCounts } from "@/lib/apis";
 import { FETCH_QUIZZES_LIMIT } from "@/lib/constants";
 import { notFound } from "next/navigation";
@@ -31,35 +23,7 @@ export default async function Page({
       {quizzes.quizzes.map((quiz) => (
         <QuizCard key={quiz.id} quiz={quiz} />
       ))}
-      <Pagination>
-        <PaginationContent>
-          {pageNum > 1 && (
-            <>
-              <PaginationItem>
-                <PaginationPrevious href={`/?page=${pageNum - 1}`} />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            </>
-          )}
-          <PaginationItem>
-            <PaginationLink href={`/?page=${pageNum}`}>
-              {pageNum}
-            </PaginationLink>
-          </PaginationItem>
-          {pageNum * FETCH_QUIZZES_LIMIT < quizCounts && (
-            <>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href={`/?page=${pageNum + 1}`} />
-              </PaginationItem>
-            </>
-          )}
-        </PaginationContent>
-      </Pagination>
+      <QuizPagination basePath="/" pageNum={pageNum} quizCounts={quizCounts} />
     </main>
   );
 }
