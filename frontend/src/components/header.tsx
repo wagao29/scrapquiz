@@ -19,12 +19,7 @@ export default async function Header() {
               <PlusSquare width={25} height={25} strokeWidth={1} />
             </Link>
           </Button>
-          <Button
-            variant="outline"
-            className="rounded-full"
-            size="icon"
-            asChild
-          >
+          <Button variant="ghost" size="icon" asChild>
             <Link href={`/users/${session?.user?.id}`}>
               <Avatar>
                 <AvatarImage
