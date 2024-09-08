@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export const POST = auth(async function POST(request) {
   const authUserId = request.auth?.user?.id;
   if (!authUserId) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.json({ error: "user not logged in" }, { status: 400 });
   }
 
   const req = await request.json();

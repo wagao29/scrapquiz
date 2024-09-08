@@ -7,15 +7,15 @@ export const POST = auth(async function POST(
   { params }: { params?: { id?: string } }
 ) {
   if (!params?.id) {
-    return NextResponse.json({
-      code: 400,
-      message: "quizId is not included in the request path",
-    });
+    return NextResponse.json(
+      { error: "quizId is not included in the request path" },
+      { status: 400 }
+    );
   }
 
   const authUserId = request.auth?.user?.id;
   if (!authUserId) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.json({ error: "user not logged in" }, { status: 400 });
   }
 
   const req = await request.json();
