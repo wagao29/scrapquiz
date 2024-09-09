@@ -1,15 +1,16 @@
 package user
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
 const (
-	testID        = "01FVSHW3SER8977QCJBYZD9HAW"
-	testName      = "太郎"
-	testAvatarURL = "https://example.com/avatar.png"
+	testUserID        = "123456789012345678901"
+	testUserName      = "太郎"
+	testUserAvatarURL = "https://example.com/avatar.png"
 )
 
 func TestNewUser(t *testing.T) {
@@ -27,23 +28,33 @@ func TestNewUser(t *testing.T) {
 		{
 			name: "正常系",
 			args: args{
-				id:        testID,
-				name:      testName,
-				avatarURL: testAvatarURL,
+				id:        testUserID,
+				name:      testUserName,
+				avatarURL: testUserAvatarURL,
 			},
 			want: &User{
-				id:        testID,
-				name:      testName,
-				avatarURL: testAvatarURL,
+				id:        testUserID,
+				name:      testUserName,
+				avatarURL: testUserAvatarURL,
 			},
 			wantErr: false,
 		},
 		{
+			name: "異常系: id の長さが不正",
+			args: args{
+				id:        "12345678901234567890123",
+				name:      testUserName,
+				avatarURL: testUserAvatarURL,
+			},
+			want:    nil,
+			wantErr: true,
+		},
+		{
 			name: "異常系: name の文字数が不正",
 			args: args{
-				id:        testID,
-				name:      "あああああああああああああああああああああ",
-				avatarURL: testAvatarURL,
+				id:        testUserID,
+				name:      strings.Repeat("あ", 31),
+				avatarURL: testUserAvatarURL,
 			},
 			want:    nil,
 			wantErr: true,
@@ -51,8 +62,8 @@ func TestNewUser(t *testing.T) {
 		{
 			name: "異常系: avatarURL のフォーマットが不正",
 			args: args{
-				id:        testID,
-				name:      testName,
+				id:        testUserID,
+				name:      testUserName,
 				avatarURL: "example.com/avatar.png",
 			},
 			want:    nil,

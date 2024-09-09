@@ -8,8 +8,9 @@ import (
 )
 
 const (
+	userIDLength  = 21
 	minNameLength = 1
-	maxNameLength = 20
+	maxNameLength = 30
 )
 
 type User struct {
@@ -19,6 +20,10 @@ type User struct {
 }
 
 func NewUser(id string, name string, avatarURL string) (*User, error) {
+	if len(id) != userIDLength {
+		return nil, utilsError.NewBadRequestError("user id length is invalid")
+	}
+
 	if utf8.RuneCountInString(name) < minNameLength || utf8.RuneCountInString(name) > maxNameLength {
 		return nil, utilsError.NewBadRequestError("user name length is invalid")
 	}
