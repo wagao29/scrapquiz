@@ -75,7 +75,7 @@ func NewMainDB(cnf config.DBConfig) {
 func connect(user string, password string, host string, port string, name string) (*sql.DB, error) {
 	for i := 0; i < maxRetries; i++ {
 		// connect := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, password, host, port, name)
-		connect := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, name)
+		connect := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, password, host, port, name)
 		db, err := sql.Open("postgres", connect)
 		if err != nil {
 			return nil, fmt.Errorf("could not open db: %w", err)
