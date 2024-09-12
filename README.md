@@ -12,33 +12,42 @@ docker-compose up --build
 
 ```shell
 curl --include -X POST -H "Content-Type: application/json" -d @user.json "http://localhost:8080/v1/users"
-curl --include -X PUT -H "Content-Type: application/json" -d '{"name":"二郎", "avatarUrl":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
+curl --include -X PUT -H "Content-Type: application/json" -d '{"name":"二郎", "avatarUrl":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/"
 curl --include "http://localhost:8080/v1/users"
-curl --include "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
-curl --include -X DELETE "http://localhost:8080/v1/users/01FVSHW3SER8977QCJBYZD9HAW"
+curl --include "http://localhost:8080/v1/users/123456789012345678901"
+curl --include -X DELETE "http://localhost:8080/v1/users/123456789012345678901"
 
 curl --include -X POST -H "Content-Type: application/json" -d @quiz.json "http://localhost:8080/v1/quizzes"
 curl --include "http://localhost:8080/v1/quizzes?limit=10&offset=0"
 curl --include "http://localhost:8080/v1/quizzes/counts"
-curl --include "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
-curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94"
+curl --include "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
+curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
 
-curl --include -X POST -H "Content-Type: application/json" -d @answer.json "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94/answers"
-curl --include "http://localhost:8080/v1/quizzes/01J62PPM6FDXWE3R1NFFN1DA94/answer_counts"
+curl --include -X POST -H "Content-Type: application/json" -d @answer.json "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answers"
+curl --include "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answer_counts"
 ```
 
 ### DB 接続
 
 ```shell
+# MySQL
 docker exec -it mysql /bin/sh
 mysql -h mysql -P 3306 -u user -ppassword db
+
+# PostgreSQL
+docker exec -it postgres /bin/sh
+psql -U user
 ```
 
 ### マイグレーション
 
 ```shell
-docker exec -it server /bin/sh
+# MySQL
 mysqldef -h mysql -p 3306 -u user -p password db < infrastructure/mysql/db/schema/schema.sql
+
+# PostgreSQL
+migrate create -ext sql -dir infrastructure/postgresql/db/migrations -seq create_users_tables
+migrate --path infrastructure/postgresql/db/migrations --database 'postgresql://user:password@localhost:5432/db?sslmode=disable' -verbose up
 ```
 
 ### sqlc コード生成

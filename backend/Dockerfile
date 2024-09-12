@@ -5,8 +5,6 @@ COPY ./ ./
 
 RUN go mod download
 
-RUN go install github.com/sqldef/sqldef/cmd/mysqldef@v0.17.17
-
 RUN go build -o app cmd/main.go
 
 EXPOSE 8080

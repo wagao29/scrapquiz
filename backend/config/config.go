@@ -19,9 +19,9 @@ type Server struct {
 
 type DBConfig struct {
 	Name     string `envconfig:"DB_DATABASE" default:"scrapquiz"`
-	User     string `envconfig:"DB_USER" default:"root"`
-	Password string `envconfig:"DB_PASS" default:""`
-	Port     string `envconfig:"DB_PORT" default:"3306"`
+	User     string `envconfig:"DB_USER" default:"user"`
+	Password string `envconfig:"DB_PASS" default:"password"`
+	Port     string `envconfig:"DB_PORT" default:"5432"`
 	Host     string `envconfig:"DB_HOST" default:"localhost"`
 }
 

@@ -1,8 +1,10 @@
 package server
 
 import (
-	"scrapquiz/infrastructure/mysql/query_service"
-	"scrapquiz/infrastructure/mysql/repository"
+	// "scrapquiz/infrastructure/mysql/query_service"
+	// "scrapquiz/infrastructure/mysql/repository"
+	"scrapquiz/infrastructure/postgresql/query_service"
+	"scrapquiz/infrastructure/postgresql/repository"
 	"scrapquiz/interface/health_check"
 
 	answerUseCase "scrapquiz/application/answer"

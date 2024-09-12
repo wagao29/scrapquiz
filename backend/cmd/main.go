@@ -5,7 +5,8 @@ import (
 	"log"
 
 	"scrapquiz/config"
-	"scrapquiz/infrastructure/mysql/db"
+	// "scrapquiz/infrastructure/mysql/db"
+	"scrapquiz/infrastructure/postgresql/db"
 	"scrapquiz/server"
 )
 

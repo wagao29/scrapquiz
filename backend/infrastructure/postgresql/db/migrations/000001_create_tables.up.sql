@@ -1,0 +1,32 @@
+CREATE TABLE users (
+  id VARCHAR(255) PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  avatar_url VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE quizzes (
+  id VARCHAR(255) PRIMARY KEY NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  option_1 VARCHAR(255) NOT NULL,
+  option_2 VARCHAR(255) NOT NULL,
+  option_3 VARCHAR(255),
+  option_4 VARCHAR(255),
+  correct_num SMALLINT NOT NULL,
+  explanation TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE answers (
+  quiz_id VARCHAR(255) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  answer_num SMALLINT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_quiz_id FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE,
+  PRIMARY KEY (quiz_id, user_id)
+);
+
+CREATE INDEX idx_quiz_id_answer_num ON answers (quiz_id, answer_num);

@@ -1,17 +1,32 @@
 services:
+  # db:
+  #   image: mysql:9.0.1
+  #   platform: linux/amd64
+  #   container_name: mysql
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mysql
+  #     MYSQL_DATABASE: db
+  #     MYSQL_USER: user
+  #     MYSQL_PASSWORD: password
+  #   restart: always
+
   db:
-    image: mysql:9.0.1
+    image: postgres:15.3
     platform: linux/amd64
-    container_name: mysql
+    container_name: postgres
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: mysql
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_ROOT_PASSWORD: root
+      POSTGRES_DATABASE: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     restart: always
 
   server:
@@ -27,8 +42,8 @@ services:
       DB_DATABASE: db
       DB_USER: user
       DB_PASS: password
-      DB_PORT: 3306
-      DB_HOST: mysql
+      DB_PORT: 5432
+      DB_HOST: postgres
     depends_on:
       - db
 
