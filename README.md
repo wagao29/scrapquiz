@@ -11,20 +11,20 @@ docker-compose up --build
 ### API 確認
 
 ```shell
-curl --include -X POST -H "Content-Type: application/json" -d @user.json "http://localhost:8080/v1/users"
-curl --include -X PUT -H "Content-Type: application/json" -d '{"name":"二郎", "avatarUrl":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/"
-curl --include "http://localhost:8080/v1/users"
-curl --include "http://localhost:8080/v1/users/123456789012345678901"
-curl --include -X DELETE "http://localhost:8080/v1/users/123456789012345678901"
+curl --include -X POST -H "Content-Type: application/json" -H "x-api-key:local-api-key" -d @user.json "http://localhost:8080/v1/users"
+curl --include -X PUT -H "Content-Type: application/json" -H "x-api-key:local-api-key" -d '{"name":"二郎", "avatarUrl":"https://example.com/avatar.png"}' "http://localhost:8080/v1/users/123456789012345678901"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/users"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/users/123456789012345678901"
+curl --include -X DELETE -H "x-api-key:local-api-key" "http://localhost:8080/v1/users/123456789012345678901"
 
-curl --include -X POST -H "Content-Type: application/json" -d @quiz.json "http://localhost:8080/v1/quizzes"
-curl --include "http://localhost:8080/v1/quizzes?limit=10&offset=0"
-curl --include "http://localhost:8080/v1/quizzes/counts"
-curl --include "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
-curl --include -X DELETE "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
+curl --include -X POST -H "Content-Type: application/json" -H "x-api-key:local-api-key" -d @quiz.json "http://localhost:8080/v1/quizzes"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/quizzes?limit=10&offset=0"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/quizzes/counts"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
+curl --include -X DELETE -H "x-api-key:local-api-key" "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P"
 
-curl --include -X POST -H "Content-Type: application/json" -d @answer.json "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answers"
-curl --include "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answer_counts"
+curl --include -X POST -H "Content-Type: application/json" -H "x-api-key:local-api-key" -d @answer.json "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answers"
+curl --include -H "x-api-key:local-api-key" "http://localhost:8080/v1/quizzes/01J7ECNB9SH0YYJJK6YB6F9V9P/answer_counts"
 ```
 
 ### DB 接続

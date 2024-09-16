@@ -1,6 +1,7 @@
 import "server-only";
 
 import {
+  API_KEY,
   ENDPOINT_URL,
   FETCH_ANSWER_COUNTS_REVALIDATION_SEC,
   FETCH_LATEST_QUIZZES_REVALIDATION_SEC,
@@ -21,9 +22,14 @@ import { AnswerCounts, Quiz, Quizzes, User } from "./types";
 
 export async function fetchUser(userId: string): Promise<User | undefined> {
   try {
-    const response = await fetch(`${ENDPOINT_URL}/users/${userId}`, {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
       next: { revalidate: FETCH_USER_REVALIDATION_SEC },
-    });
+    };
+    const response = await fetch(`${ENDPOINT_URL}/users/${userId}`, params);
     if (!response.ok) {
       throw new Error(`[fetchUser] error status code: ${response.status}`);
     }
@@ -36,9 +42,14 @@ export async function fetchUser(userId: string): Promise<User | undefined> {
 
 export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
   try {
-    const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
       next: { revalidate: FETCH_QUIZ_REVALIDATION_SEC },
-    });
+    };
+    const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, params);
     if (!response.ok) {
       throw new Error(`[fetchQuiz] error status code: ${response.status}`);
     }
@@ -51,12 +62,18 @@ export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
 
 export async function fetchQuizCounts(userId?: string): Promise<number> {
   try {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+      next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
+    };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes/counts${userId ? `?user_id=${userId}` : ""}`,
-      {
-        next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
-      }
+      params
     );
+
     if (!response.ok) {
       throw new Error(
         `[fetchQuizCounts] error status code: ${response.status}`
@@ -74,11 +91,16 @@ export async function fetchLatestQuizzes(
   offset: number
 ): Promise<Quizzes | undefined> {
   try {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+      next: { revalidate: FETCH_LATEST_QUIZZES_REVALIDATION_SEC },
+    };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
-      {
-        next: { revalidate: FETCH_LATEST_QUIZZES_REVALIDATION_SEC },
-      }
+      params
     );
     if (!response.ok) {
       throw new Error(
@@ -94,11 +116,16 @@ export async function fetchLatestQuizzes(
 
 export async function fetchRandomQuizzes(): Promise<Quizzes | undefined> {
   try {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+      next: { revalidate: FETCH_RANDOM_QUIZZES_REVALIDATION_SEC },
+    };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?order=random&limit=${FETCH_QUIZZES_LIMIT}&offset=0`,
-      {
-        next: { revalidate: FETCH_RANDOM_QUIZZES_REVALIDATION_SEC },
-      }
+      params
     );
     if (!response.ok) {
       throw new Error(
@@ -117,11 +144,16 @@ export async function fetchQuizzesByUserId(
   offset: number
 ): Promise<Quizzes | undefined> {
   try {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+      next: { revalidate: FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC },
+    };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?user_id=${userId}&limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
-      {
-        next: { revalidate: FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC },
-      }
+      params
     );
     if (!response.ok) {
       throw new Error(
@@ -139,11 +171,16 @@ export async function fetchAnswerCounts(
   quizId: string
 ): Promise<AnswerCounts | undefined> {
   try {
+    const params = {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+      },
+      next: { revalidate: FETCH_ANSWER_COUNTS_REVALIDATION_SEC },
+    };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes/${quizId}/answer_counts`,
-      {
-        next: { revalidate: FETCH_ANSWER_COUNTS_REVALIDATION_SEC },
-      }
+      params
     );
     if (!response.ok) {
       throw new Error(
@@ -167,6 +204,7 @@ export async function createUser(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": API_KEY,
       },
       body: JSON.stringify({
         id: userId,
@@ -195,6 +233,7 @@ export async function updateUser(
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": API_KEY,
       },
       body: JSON.stringify({
         name: userName,
@@ -218,6 +257,7 @@ export async function createQuiz(data: any): Promise<any | undefined> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": API_KEY,
       },
       body: JSON.stringify(data),
     };
@@ -233,9 +273,13 @@ export async function createQuiz(data: any): Promise<any | undefined> {
 
 export async function deleteQuiz(quizId: string): Promise<boolean> {
   try {
-    const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, {
+    const params = {
       method: "DELETE",
-    });
+      headers: {
+        "x-api-key": API_KEY,
+      },
+    };
+    const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, params);
     if (!response.ok) {
       throw new Error(`[deleteQuiz] error status code: ${response.status}`);
     }
@@ -255,6 +299,7 @@ export async function createAnswer(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": API_KEY,
       },
       body: JSON.stringify(data),
     };

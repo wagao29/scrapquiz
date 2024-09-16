@@ -2,10 +2,12 @@ package server
 
 import (
 	"net/http"
+	"os"
 
 	utilsError "scrapquiz/utils/error"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type ErrorResponse struct {
@@ -40,4 +42,13 @@ func ErrorHandler(err error, c echo.Context) {
 			})
 		}
 	}
+}
+
+func AuthAPIKey() echo.MiddlewareFunc {
+	return middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
+		KeyLookup: "header:X-API-KEY",
+		Validator: func(key string, c echo.Context) (bool, error) {
+			return key == os.Getenv("API_KEY"), nil
+		},
+	})
 }

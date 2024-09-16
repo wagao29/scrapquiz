@@ -44,6 +44,7 @@ services:
       DB_PASS: password
       DB_PORT: 5432
       DB_HOST: postgres
+      API_KEY: local-api-key
     depends_on:
       - db
 

@@ -21,6 +21,7 @@ import (
 func InitRoute(e *echo.Echo) {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(AuthAPIKey())
 	e.HTTPErrorHandler = ErrorHandler
 
 	v1 := e.Group("/v1")
