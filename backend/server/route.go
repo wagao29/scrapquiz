@@ -18,10 +18,10 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func InitRoute(e *echo.Echo) {
+func InitRoute(e *echo.Echo, apiKey string) {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(AuthAPIKey())
+	e.Use(AuthAPIKey(apiKey))
 	e.HTTPErrorHandler = ErrorHandler
 
 	v1 := e.Group("/v1")

@@ -2,7 +2,6 @@ package server
 
 import (
 	"net/http"
-	"os"
 
 	utilsError "scrapquiz/utils/error"
 
@@ -44,11 +43,11 @@ func ErrorHandler(err error, c echo.Context) {
 	}
 }
 
-func AuthAPIKey() echo.MiddlewareFunc {
+func AuthAPIKey(apiKey string) echo.MiddlewareFunc {
 	return middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
 		KeyLookup: "header:X-API-KEY",
 		Validator: func(key string, c echo.Context) (bool, error) {
-			return key == os.Getenv("API_KEY"), nil
+			return key == apiKey, nil
 		},
 	})
 }

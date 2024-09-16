@@ -14,6 +14,7 @@ type Config struct {
 type Server struct {
 	Address                 string `envconfig:"SERVER_ADDRESS" default:"0.0.0.0"`
 	Port                    string `envconfig:"SERVER_PORT" default:"8080"`
+	APIKey                  string `envconfig:"API_KEY" default:""`
 	GracefulShutdownTimeout int    `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT" default:"0"`
 }
 

@@ -16,7 +16,7 @@ import (
 
 func Run(ctx context.Context, conf *config.Config) {
 	e := echo.New()
-	InitRoute(e)
+	InitRoute(e, conf.Server.APIKey)
 
 	address := conf.Server.Address + ":" + conf.Server.Port
 	log.Printf("Starting server on %v...\n", address)
