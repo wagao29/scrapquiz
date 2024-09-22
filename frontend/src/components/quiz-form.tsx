@@ -19,6 +19,7 @@ import {
   MAX_QUIZ_OPTION,
 } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toastError, toastSuccess } from "./toasts";
 import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
@@ -71,6 +72,7 @@ const formSchema = z.object({
 
 export const QuizForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,6 +88,7 @@ export const QuizForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     const options: string[] = [];
     for (const [key, value] of Object.entries(values)) {
       if (key.startsWith("option")) {
@@ -112,6 +115,7 @@ export const QuizForm = () => {
       router.push(`/quizzes/${json.id}`);
     } else {
       toastError("クイズの作成に失敗しました");
+      setLoading(false);
     }
   }
 
@@ -262,6 +266,7 @@ export const QuizForm = () => {
           type="button"
           onClick={form.handleSubmit(onSubmit)}
           className="mt-10"
+          disabled={loading}
         >
           作成する
         </Button>
