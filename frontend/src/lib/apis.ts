@@ -1,17 +1,6 @@
 import "server-only";
 
-import {
-  API_KEY,
-  ENDPOINT_URL,
-  FETCH_ANSWER_COUNTS_REVALIDATION_SEC,
-  FETCH_LATEST_QUIZZES_REVALIDATION_SEC,
-  FETCH_QUIZ_COUNTS_REVALIDATION_SEC,
-  FETCH_QUIZ_REVALIDATION_SEC,
-  FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC,
-  FETCH_QUIZZES_LIMIT,
-  FETCH_RANDOM_QUIZZES_REVALIDATION_SEC,
-  FETCH_USER_REVALIDATION_SEC,
-} from "./constants";
+import { API_KEY, ENDPOINT_URL, FETCH_QUIZZES_LIMIT } from "./constants";
 import {
   answerCountsSchema,
   quizSchema,
@@ -22,12 +11,12 @@ import { AnswerCounts, Quiz, Quizzes, User } from "./types";
 
 export async function fetchUser(userId: string): Promise<User | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_USER_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(`${ENDPOINT_URL}/users/${userId}`, params);
     if (!response.ok) {
@@ -42,12 +31,12 @@ export async function fetchUser(userId: string): Promise<User | undefined> {
 
 export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_QUIZ_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(`${ENDPOINT_URL}/quizzes/${quizId}`, params);
     if (!response.ok) {
@@ -62,12 +51,12 @@ export async function fetchQuiz(quizId: string): Promise<Quiz | undefined> {
 
 export async function fetchQuizCounts(userId?: string): Promise<number> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_QUIZ_COUNTS_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes/counts${userId ? `?user_id=${userId}` : ""}`,
@@ -91,12 +80,12 @@ export async function fetchLatestQuizzes(
   offset: number
 ): Promise<Quizzes | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_LATEST_QUIZZES_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
@@ -116,12 +105,12 @@ export async function fetchLatestQuizzes(
 
 export async function fetchRandomQuizzes(): Promise<Quizzes | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_RANDOM_QUIZZES_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?order=random&limit=${FETCH_QUIZZES_LIMIT}&offset=0`,
@@ -144,12 +133,12 @@ export async function fetchQuizzesByUserId(
   offset: number
 ): Promise<Quizzes | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_QUIZZES_BY_USER_ID_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes?user_id=${userId}&limit=${FETCH_QUIZZES_LIMIT}&offset=${offset}`,
@@ -171,12 +160,12 @@ export async function fetchAnswerCounts(
   quizId: string
 ): Promise<AnswerCounts | undefined> {
   try {
-    const params = {
+    const params: RequestInit = {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
       },
-      next: { revalidate: FETCH_ANSWER_COUNTS_REVALIDATION_SEC },
+      cache: "no-cache",
     };
     const response = await fetch(
       `${ENDPOINT_URL}/quizzes/${quizId}/answer_counts`,
