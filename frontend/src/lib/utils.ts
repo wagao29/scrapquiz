@@ -24,3 +24,16 @@ export function formatDate(datetime: string) {
     return "たった今";
   }
 }
+
+export const getAnonymousUserId = () => {
+  const anonymousUserId = localStorage.getItem("anonymousUserId");
+  if (anonymousUserId) return anonymousUserId;
+
+  const digits = "0123456789";
+  let result = "a";
+  for (let i = 0; i < 20; i++) {
+    result += digits.charAt(Math.floor(Math.random() * digits.length));
+  }
+  localStorage.setItem("anonymousUserId", result);
+  return result;
+};

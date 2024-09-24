@@ -1,5 +1,6 @@
 "use client";
 
+import { getAnonymousUserId } from "@/lib/utils";
 import { useState } from "react";
 import { OptionButton } from "./option-button";
 
@@ -49,6 +50,7 @@ export function QuizContent({
                     },
                     body: JSON.stringify({
                       answerNum: index + 1,
+                      anonymousUserId: getAnonymousUserId(),
                     }),
                   };
                   await fetch(`/api/quizzes/${quizId}/answers`, params);

@@ -14,14 +14,10 @@ export const POST = auth(async function POST(
   }
 
   const authUserId = request.auth?.user?.id;
-  if (!authUserId) {
-    return NextResponse.json({ error: "user not logged in" }, { status: 400 });
-  }
-
   const req = await request.json();
   const data = {
-    userId: authUserId,
-    ...req,
+    userId: authUserId || req.anonymousUserId,
+    answerNum: req.answerNum,
   };
   const response = await createAnswer(params.id, data);
 
