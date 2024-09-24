@@ -23,8 +23,10 @@ type Props = React.ComponentProps<typeof Button> & {
 export function QuizDeleteButton({ quizId, className, ...props }: Props) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onClickDelete = async () => {
+    setLoading(true);
     const response = await fetch(`/api/quizzes/${quizId}`, {
       method: "DELETE",
     });
@@ -35,6 +37,7 @@ export function QuizDeleteButton({ quizId, className, ...props }: Props) {
       toastError("クイズの削除に失敗しました");
     }
     setOpenDialog(false);
+    setLoading(false);
   };
 
   return (
@@ -70,6 +73,7 @@ export function QuizDeleteButton({ quizId, className, ...props }: Props) {
             <AlertDialogAction
               className="bg-white text-red-600 border border-red-600 hover:bg-red-600 hover:text-white"
               onClick={onClickDelete}
+              disabled={loading}
             >
               削除する
             </AlertDialogAction>
