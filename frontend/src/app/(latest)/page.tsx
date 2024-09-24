@@ -3,6 +3,7 @@ import QuizPagination from "@/components/quiz-pagination";
 import TabMenu from "@/components/tab-menu";
 import { fetchLatestQuizzes, fetchQuizCounts } from "@/lib/apis";
 import { FETCH_QUIZZES_LIMIT } from "@/lib/constants";
+import { sleep } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 export default async function Page({
@@ -18,6 +19,8 @@ export default async function Page({
   if ((pageNum - 1) * FETCH_QUIZZES_LIMIT > quizCounts || !quizzes) {
     notFound();
   }
+
+  await sleep(1000);
 
   return (
     <main className="flex flex-col gap-4 items-center mx-4">
