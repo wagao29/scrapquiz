@@ -23,8 +23,5 @@ export const quizzesSchema = z.object({
 });
 
 export const answerCountsSchema = z.object({
-  answerNum1Count: z.number().min(0),
-  answerNum2Count: z.number().min(0),
-  answerNum3Count: z.number().min(0),
-  answerNum4Count: z.number().min(0),
+  answerCounts: z.array(z.number()).length(4),
 });

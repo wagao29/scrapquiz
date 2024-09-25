@@ -19,8 +19,9 @@ export async function QuizCard({
   className,
   ...props
 }: Props) {
-  const res = await fetchAnswerCounts(quiz.id);
-  const answerCounts = Object.values(res || {});
+  const answerCounts = (await fetchAnswerCounts(quiz.id))?.answerCounts || [
+    0, 0, 0, 0,
+  ];
   const answerCountsSum = answerCounts.reduce((sum, ac) => sum + ac, 0);
   const correctAnswerRate = Math.floor(
     (answerCounts[quiz.correctNum - 1] / answerCountsSum) * 100

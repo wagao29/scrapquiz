@@ -26,10 +26,12 @@ func (h handler) GetAnswerCountsByAnswerID(c echo.Context) error {
 		return err
 	}
 	res := FetchAnswerCountsResponse{
-		AnswerNum1Count: outputDto.AnswerNum1Count,
-		AnswerNum2Count: outputDto.AnswerNum2Count,
-		AnswerNum3Count: outputDto.AnswerNum3Count,
-		AnswerNum4Count: outputDto.AnswerNum4Count,
+		AnswerCounts: []int{
+			outputDto.AnswerNum1Count,
+			outputDto.AnswerNum2Count,
+			outputDto.AnswerNum3Count,
+			outputDto.AnswerNum4Count,
+		},
 	}
 
 	return c.JSON(http.StatusOK, res)
