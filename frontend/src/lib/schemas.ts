@@ -23,5 +23,5 @@ export const quizzesSchema = z.object({
 });
 
 export const answerCountsSchema = z.object({
-  answerCounts: z.array(z.number()).length(4),
+  answerCounts: z.array(z.number().min(0)).length(4),
 });
