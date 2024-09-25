@@ -1,5 +1,9 @@
 # scrapquiz
 
+Go と Next.js で作ったクイズアプリ
+
+https://scrapquiz.vercel.app
+
 ## backend
 
 ### 起動
