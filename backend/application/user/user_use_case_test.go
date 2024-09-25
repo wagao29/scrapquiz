@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	testID        = "01FVSHW3SER8977QCJBYZD9HAW"
-	testName      = "太郎"
-	testAvatarURL = "https://example.com/avatar.png"
+	testUserID        = "123456789012345678901"
+	testUserName      = "太郎"
+	testUserAvatarURL = "https://example.com/avatar.png"
 )
 
 func TestUserUseCase_FindByID(t *testing.T) {
@@ -32,29 +32,29 @@ func TestUserUseCase_FindByID(t *testing.T) {
 	}{
 		{
 			name:  "正常系",
-			input: "01FVSHW3SER8977QCJBYZD9HAW",
+			input: testUserID,
 			mockFunc: func() {
 				mockUserRepo.
 					EXPECT().
 					FindByID(gomock.Any(), gomock.Any()).
 					DoAndReturn(func(ctx context.Context, id string) (*userDomain.User, error) {
 						return userDomain.NewUser(
-							testID,
-							testName,
-							testAvatarURL,
+							testUserID,
+							testUserName,
+							testUserAvatarURL,
 						)
 					})
 			},
 			want: &UserUseCaseOutputDto{
-				ID:        testID,
-				Name:      testName,
-				AvatarURL: testAvatarURL,
+				ID:        testUserID,
+				Name:      testUserName,
+				AvatarURL: testUserAvatarURL,
 			},
 			wantErr: false,
 		},
 		{
 			name:  "異常系: idを持つユーザーが存在しない場合",
-			input: "01FVSHW3SER8977QCJBYZD9HAX",
+			input: "123456789012345678900",
 			mockFunc: func() {
 				mockUserRepo.
 					EXPECT().
@@ -104,9 +104,9 @@ func TestUserUseCase_FindAll(t *testing.T) {
 						var users []*userDomain.User
 						for i := range 3 {
 							user, _ := userDomain.NewUser(
-								fmt.Sprintf("%d1FVSHW3SER8977QCJBYZD9HAW", i),
-								testName,
-								testAvatarURL,
+								fmt.Sprintf("12345678901234567890%d", i),
+								testUserName,
+								testUserAvatarURL,
 							)
 							users = append(users, user)
 						}
@@ -115,19 +115,19 @@ func TestUserUseCase_FindAll(t *testing.T) {
 			},
 			want: []*UserUseCaseOutputDto{
 				{
-					ID:        "01FVSHW3SER8977QCJBYZD9HAW",
-					Name:      testName,
-					AvatarURL: testAvatarURL,
+					ID:        "123456789012345678900",
+					Name:      testUserName,
+					AvatarURL: testUserAvatarURL,
 				},
 				{
-					ID:        "11FVSHW3SER8977QCJBYZD9HAW",
-					Name:      testName,
-					AvatarURL: testAvatarURL,
+					ID:        "123456789012345678901",
+					Name:      testUserName,
+					AvatarURL: testUserAvatarURL,
 				},
 				{
-					ID:        "21FVSHW3SER8977QCJBYZD9HAW",
-					Name:      testName,
-					AvatarURL: testAvatarURL,
+					ID:        "123456789012345678902",
+					Name:      testUserName,
+					AvatarURL: testUserAvatarURL,
 				},
 			},
 			wantErr: false,
@@ -177,17 +177,17 @@ func TestUserUseCase_Save(t *testing.T) {
 		{
 			name: "正常系",
 			input: UserUseCaseInputDto{
-				ID:        testID,
-				Name:      testName,
-				AvatarURL: testAvatarURL,
+				ID:        testUserID,
+				Name:      testUserName,
+				AvatarURL: testUserAvatarURL,
 			},
 			mockFunc: func() {
 				mockUserRepo.EXPECT().Save(gomock.Any(), gomock.Any()).Return(nil)
 			},
 			want: &UserUseCaseOutputDto{
-				ID:        testID,
-				Name:      testName,
-				AvatarURL: testAvatarURL,
+				ID:        testUserID,
+				Name:      testUserName,
+				AvatarURL: testUserAvatarURL,
 			},
 			wantErr: false,
 		},
@@ -224,9 +224,9 @@ func TestUserUseCase_Update(t *testing.T) {
 		{
 			name: "正常系",
 			input: UserUseCaseInputDto{
-				ID:        testID,
-				Name:      testName,
-				AvatarURL: testAvatarURL,
+				ID:        testUserID,
+				Name:      testUserName,
+				AvatarURL: testUserAvatarURL,
 			},
 			mockFunc: func() {
 				mockUserRepo.EXPECT().Update(gomock.Any(), gomock.Any()).Return(nil)
@@ -262,7 +262,7 @@ func TestUserUseCase_Delete(t *testing.T) {
 	}{
 		{
 			name:  "正常系",
-			input: testID,
+			input: testUserID,
 			mockFunc: func() {
 				mockUserRepo.EXPECT().Delete(gomock.Any(), gomock.Any()).Return(nil)
 			},
