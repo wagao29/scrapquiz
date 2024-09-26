@@ -109,8 +109,8 @@ func newQuiz(
 		return nil, utilsError.NewBadRequestError("explanation is too long")
 	}
 
-	if correctNum > len(options)-1 {
-		return nil, utilsError.NewBadRequestError("correctNum is too large for the number of options")
+	if correctNum < 1 || correctNum > len(options) {
+		return nil, utilsError.NewBadRequestError("correctNum is out of range")
 	}
 
 	var opts Options
