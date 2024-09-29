@@ -52,7 +52,8 @@ export function OptionButton({
       </div>
       <div
         className={cn(
-          "absolute top-0 left-0 h-full bg-blue-400 transition-all duration-500 opacity-20 rounded-s",
+          "absolute top-0 left-0 h-full bg-blue-400 opacity-20 rounded-s",
+          answeredNum !== 0 && "transition-all duration-500",
           answerRate === 100 && "rounded-e"
         )}
         style={{ width: `${answeredNum === 0 ? 0 : `${answerRate}%`}` }}

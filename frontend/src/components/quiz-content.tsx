@@ -1,7 +1,8 @@
 "use client";
 
 import { getAnonymousUserId } from "@/lib/utils";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { OptionButton } from "./option-button";
 
 type Props = {
@@ -24,6 +25,12 @@ export function QuizContent({
   answerCountsSum,
 }: Props) {
   const [answeredNum, setAnsweredNum] = useState(0);
+  const searchParams = useSearchParams();
+  const pageNum = searchParams.get("page");
+
+  useEffect(() => {
+    setAnsweredNum(0);
+  }, [pageNum]);
 
   return (
     <div className="flex flex-col px-4">
